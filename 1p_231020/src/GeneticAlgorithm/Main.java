@@ -5,6 +5,9 @@
  */
 package GeneticAlgorithm;
 
+import java.util.Arrays;
+import java.util.Random;
+
 /**
  *
  * @author Marken Tuan Nguyen
@@ -14,8 +17,24 @@ public class Main {
     /**
      * @param args the command line arguments
      */
+    private Population population;
+    private static int numberOfGenes;
+    private static int numberOfIndividuals;
+        
+    public Main() {
+        this.population = new Population(numberOfIndividuals, numberOfGenes);
+    }
+        
     public static void main(String[] args) {
-        // TODO code application logic here
+ 
+        numberOfGenes = 10;
+        numberOfIndividuals = 50;
+                
+        Main m = new Main();
+        m.population = new Population(numberOfGenes, numberOfGenes);
+        
+        System.out.println("Population of "+m.population.getPopSize()+" individual(s).");
+
     }
     
 }
