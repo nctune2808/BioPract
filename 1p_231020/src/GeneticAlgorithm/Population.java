@@ -17,14 +17,16 @@ public class Population {
     int geneLength;
     
     public Population(int popSize, int geneLength){
-        super();
         this.popSize = popSize;
         this.geneLength = geneLength;
         this.individuals = new Individual[popSize];
         
         for(int i=0; i<popSize; i++){
-            individuals[i] = new Individual(geneLength);
+            this.individuals[i] = new Individual(geneLength);
+            individuals[i].calcFitness();
+            System.out.println(individuals[i].getFitness());
         }
+        
     }
 
     public Individual[] getIndividuals() {

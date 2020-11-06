@@ -5,6 +5,7 @@
  */
 package GeneticAlgorithm;
 
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -22,9 +23,10 @@ public class Individual {
         
         Random ran = new Random();
         for(int i=0; i<genes.length; i++){
-            genes[i] = Math.abs(ran.nextInt()%2);
+            this.genes[i] = Math.abs(ran.nextInt()%2);
         }
         fitness = 0;
+        System.out.println(Arrays.toString(genes));
     }
     
     public void calcFitness() {

@@ -17,7 +17,7 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    private Population population;
+    private static Population population;
     private static int numberOfGenes;
     private static int numberOfIndividuals;
         
@@ -30,10 +30,11 @@ public class Main {
         numberOfGenes = 10;
         numberOfIndividuals = 50;
                 
-        Main m = new Main();
-        m.population = new Population(numberOfGenes, numberOfGenes);
+        population = new Population(numberOfIndividuals, numberOfGenes);
         
-        System.out.println("Population of "+m.population.getPopSize()+" individual(s).");
+//        System.out.println(population.getIndividuals());
+       
+//        System.out.println("Population of "+population.getIndividuals()+" individual(s).");
 
     }
     
