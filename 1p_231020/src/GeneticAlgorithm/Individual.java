@@ -26,10 +26,10 @@ public class Individual {
             this.genes[i] = Math.abs(ran.nextInt()%2);
         }
         fitness = 0;
-        System.out.println(Arrays.toString(genes));
+//        System.out.println(Arrays.toString(genes));
     }
     
-    public void calcFitness() {
+    public void calcIndFitness() {
         for (int i = 0; i < genes.length; i++) {
             if (genes[i] == 1) {
                 fitness++;

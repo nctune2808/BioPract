@@ -18,24 +18,27 @@ public class Main {
      * @param args the command line arguments
      */
     private static Population population;
+    private static Individual[] pop;
+    
     private static int numberOfGenes;
     private static int numberOfIndividuals;
         
-    public Main() {
-        this.population = new Population(numberOfIndividuals, numberOfGenes);
-    }
+//    public Main() {
+//        this.population = new Population(numberOfIndividuals, numberOfGenes);
+//    }
         
     public static void main(String[] args) {
  
         numberOfGenes = 10;
-        numberOfIndividuals = 50;
+        numberOfIndividuals = 5;
                 
         population = new Population(numberOfIndividuals, numberOfGenes);
-        
-//        System.out.println(population.getIndividuals());
+        System.out.println(Arrays.toString(population.selection()));
        
 //        System.out.println("Population of "+population.getIndividuals()+" individual(s).");
 
     }
+    
+    
     
 }
