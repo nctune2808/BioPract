@@ -30,10 +30,12 @@ public class Main {
     public static void main(String[] args) {
  
         numberOfGenes = 10;
-        numberOfIndividuals = 5;
+        numberOfIndividuals = 50;
                 
         population = new Population(numberOfIndividuals, numberOfGenes);
-        System.out.println(Arrays.toString(population.selection()));
+        System.out.println(population.selection());
+        System.out.println("Total fitness: "+ population.totalFitnessPopulation);
+//        System.out.println(population.calcPopFitness());
        
 //        System.out.println("Population of "+population.getIndividuals()+" individual(s).");
 

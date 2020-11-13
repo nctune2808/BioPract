@@ -19,7 +19,8 @@ public class Population {
     Individual[] individuals;
     int popSize;    // P:numberOfIndividuals
     int geneLength; // N:numberOfGenes
-    
+    int totalFitnessPopulation = 0;     //takes fitness from individuals
+    int totalFitnessOffsprings = 0;     //takes fitness from better offsprings
     public Population(int popSize, int geneLength){
         this.popSize = popSize;
         this.geneLength = geneLength;
@@ -27,49 +28,62 @@ public class Population {
         
         for(int i=0; i<popSize; i++){
             individuals[i] = new Individual(geneLength);
-            individuals[i].calcIndFitness();
+            totalFitnessPopulation += individuals[i].calcIndFitness();
             
             System.out.println(Arrays.toString(individuals[i].getGenes()));
             System.out.println(individuals[i].getFitness());
+            System.out.println(totalFitnessPopulation);
         }
+        
+        
         
     }
     
-    public int[] selection () {
+    public Individual[] selection () {
         
-        int[] selected_inds = new int[popSize];    //temp[]
-        int off1, off2;
+        Individual[] offSpring = new Individual[popSize];    //temp[]
+        Individual off1, off2;
         int parent1,parent2;
         
         Random ran = new Random();
         for(int i=0;i<popSize; i++){
             parent1 = Math.abs(ran.nextInt()%popSize);
-            off1 = individuals[parent1].getFitness();
+            off1 = individuals[parent1];
             parent2 = Math.abs(ran.nextInt()%popSize);
-            off2 = individuals[parent2].getFitness();
+            off2 = individuals[parent2];
             
-            if(off1 > off2){
-                selected_inds[i] = off1;
+            if(off1.fitness > off2.fitness){
+                offSpring[i] = off1;
             }else{
-                selected_inds[i] = off2;
+                offSpring[i] = off2;
             }
+            
+            
             System.out.println("--------------------------");
 //            System.out.println("Parent1: "+parent1);
-            System.out.println("off1: " + (off1));
+            System.out.println("off1: " + (off1.fitness));
 //            System.out.println("Parent2: "+parent2);
-            System.out.println("off2: " + (off2));
+            System.out.println("off2: " + (off2.fitness));
+            
+            System.out.println("select->: " + offSpring[i].fitness );
             System.out.println("--------------------------");
+        }  
+        
+        for (int i = 0; i < offSpring.length; i++) {
+            totalFitnessOffsprings += offSpring[i].fitness;
         }
         
-        
-        
-        return selected_inds;
+        System.out.println("Total Fitness Offsprings: "+totalFitnessOffsprings);
+                    
+        return null;
     }
     
-//    public void calcPopFitness(){
-//        for (int i = 0; i < individuals.length; i++) {
-//            individuals[i].calcIndFitness();
-//        }
+//    public int calcPopFitness(){
+//        
+//        
+//        
+//        
+//        return selection().fitness;
 //    }
     
 

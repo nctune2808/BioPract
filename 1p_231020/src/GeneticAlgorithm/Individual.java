@@ -29,12 +29,13 @@ public class Individual {
 //        System.out.println(Arrays.toString(genes));
     }
     
-    public void calcIndFitness() {
+    public int calcIndFitness() {
         for (int i = 0; i < genes.length; i++) {
             if (genes[i] == 1) {
                 fitness++;
             }
         }
+        return fitness;
     }
 
     public int getGeneLength() {
