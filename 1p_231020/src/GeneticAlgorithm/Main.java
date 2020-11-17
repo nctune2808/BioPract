@@ -6,7 +6,6 @@
 package GeneticAlgorithm;
 
 import java.util.Arrays;
-import java.util.Random;
 
 /**
  *
@@ -17,26 +16,26 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    private static Population population;
-    private static Individual[] pop;
+    private static Population population;    
+    private static Selection selection;
+    private static Crossover crossover;
     
     private static int numberOfGenes;
     private static int numberOfIndividuals;
-        
-//    public Main() {
-//        this.population = new Population(numberOfIndividuals, numberOfGenes);
-//    }
-        
+              
     public static void main(String[] args) {
  
         numberOfGenes = 10;
-        numberOfIndividuals = 50;
+        numberOfIndividuals = 5;
                 
         population = new Population(numberOfIndividuals, numberOfGenes);
-        System.out.println(population.selection());
-        System.out.println("Total fitness: "+ population.totalFitnessPopulation);
+        System.out.println("Total Fitness Population: "+ population.totalFitnessPopulation);
+        selection = new Selection(population);
+        System.out.println("Total Fitness Offsprings: "+ selection.totalFitnessOffsprings);
+        crossover = new Crossover(selection);
+        System.out.println("Cross: "+crossover.temp);
+        
 //        System.out.println(population.calcPopFitness());
-       
 //        System.out.println("Population of "+population.getIndividuals()+" individual(s).");
 
     }
