@@ -30,10 +30,12 @@ public class Main {
                 
         population = new Population(numberOfIndividuals, numberOfGenes);
         System.out.println("Total Fitness Population: "+ population.totalFitnessPopulation);
+        
         selection = new Selection(population);
         System.out.println("Total Fitness Offsprings: "+ selection.totalFitnessOffsprings);
-        crossover = new Crossover(selection);
-        System.out.println("Cross: "+crossover.temp);
+        
+        crossover = new Crossover(selection.firstFittest(), selection.secondFittest(), numberOfGenes);
+        System.out.println("After Crossover:\n"+crossover.toString());
         
 //        System.out.println(population.calcPopFitness());
 //        System.out.println("Population of "+population.getIndividuals()+" individual(s).");

@@ -40,16 +40,6 @@ public class Population {
     }
     
     
-    
-//    public int calcPopFitness(){
-//        
-//        
-//        
-//        
-//        return selection().fitness;
-//    }
-    
-
     public Individual[] getIndividuals() {
         return individuals;
     }
