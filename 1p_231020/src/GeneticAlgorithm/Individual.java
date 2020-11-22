@@ -13,54 +13,24 @@ import java.util.Random;
  * @author Marken Tuan Nguyen
  */
 public class Individual {
-    int geneLength;
-    int[] genes;
+    int[] genes = new int[10];
     int fitness = 0;
     
-    public Individual(int geneLength) {
-        this.geneLength = geneLength;
-        this.genes = new int[geneLength];
-        
-        Random ran = new Random();
-        for(int i=0; i<genes.length; i++){
-            this.genes[i] = Math.abs(ran.nextInt()%2);
+    public Individual() {
+        Random rand = new Random();
+
+        for(int i=0; i<Main.N; i++) {
+            this.genes[i] = (Math.abs(rand.nextInt())%2); //generates 0 or 1 randomly
         }
-        fitness = 0;
-//        System.out.println(Arrays.toString(genes));
+        this.fitness=0;
     }
     
-    public int calcIndFitness() {
-        for (int i = 0; i < genes.length; i++) {
-            if (genes[i] == 1) {
-                fitness++;
+    public int calFit(){
+        for (int i = 0; i <Main.N; i++) {
+            if (this.genes[i] == 1) {
+                this.fitness +=1;
             }
         }
         return fitness;
     }
-
-    public int getGeneLength() {
-        return geneLength;
-    }
-
-    public void setGeneLength(int geneLength) {
-        this.geneLength = geneLength;
-    }
-
-    public int[] getGenes() {
-        return genes;
-    }
-
-    public void setGenes(int[] genes) {
-        this.genes = genes;
-    }
-
-    public int getFitness() {
-        return fitness;
-    }
-
-    public void setFitness(int fitness) {
-        this.fitness = fitness;
-    }
-    
-    
 }

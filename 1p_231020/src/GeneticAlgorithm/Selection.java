@@ -14,44 +14,38 @@ import java.util.Random;
  */
 public class Selection {
     
+    Individual[] offSpring = new Individual[Main.P];
     Individual off1, off2;
-    Individual[] offSpring;
-    int parent1,parent2;
     int totalFitnessOffsprings = 0;     //takes fitness from offsprings
         
-    public Selection (Population pop) {      //return Individual[]
-        
-        offSpring = new Individual[pop.popSize];    //temp[]
-        
+    public Selection (Individual[] population) {      //return Individual[]
+                
         Random ran = new Random();
-        for(int i=0;i<pop.popSize; i++){
-            parent1 = Math.abs(ran.nextInt(pop.popSize));
-            off1 = pop.individuals[parent1];
-            parent2 = Math.abs(ran.nextInt(pop.popSize));
-            off2 = pop.individuals[parent2];
+        for(int i=0;i<Main.P; i++){
+            int parent1 = Math.abs(ran.nextInt(Main.P));
+            int parent2 = Math.abs(ran.nextInt(Main.P));
+//            off1 = population[parent1];
+//            off2 = population[parent2];
             
-            if(off1.fitness > off2.fitness){
-                offSpring[i] = off1;
+            if(population[parent1].fitness > population[parent2].fitness){
+                this.offSpring[i] = population[parent1];
             }else{
-                offSpring[i] = off2;
+                this.offSpring[i] = population[parent2];
             }
+//            System.out.println("---------------------------------------------------------");
+//            System.out.println("p1: " + Arrays.toString(population[parent1].genes)+ "\tF= "+population[parent1].fitness);
+//            System.out.println("p2: " + Arrays.toString(population[parent2].genes)+ "\tF= "+population[parent2].fitness);
 //            
-            System.out.println("select->: " + Arrays.toString(offSpring[i].genes) );
-        }  
-        
-        for (int i = 0; i < offSpring.length; i++) {
-            totalFitnessOffsprings += offSpring[i].fitness;
+            System.out.println("select->: " + Arrays.toString(this.offSpring[i].genes) );
         }
-        
-//        System.out.println("Total Fitness Offsprings: "+totalFitnessOffsprings);
-            
+        calSelectFitness();
     }
     
-    public Individual firstFittest(){
-        return off1;
+    public int calSelectFitness(){
+        for (int i = 0; i < offSpring.length; i++) {
+            this.totalFitnessOffsprings += offSpring[i].fitness;
+        }
+        return totalFitnessOffsprings;
     }
-    
-    public Individual secondFittest(){
-        return off2;
-    }
+
 }

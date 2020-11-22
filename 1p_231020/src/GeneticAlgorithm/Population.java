@@ -13,56 +13,30 @@ import java.util.Random;
  * @author Marken Tuan Nguyen
  */
 public class Population {
+
+    int totalFitnessPopulation = 0;
+    Individual[] population = new Individual[Main.P];
     
-//    Pop ( Ind ( Gen )  )
     
-    Individual[] individuals;
-    int popSize;    // P:numberOfIndividuals
-    int geneLength; // N:numberOfGenes
-    int totalFitnessPopulation = 0;     //takes fitness from population
     
-    public Population(int popSize, int geneLength){
-        this.popSize = popSize;
-        this.geneLength = geneLength;
-        this.individuals = new Individual[popSize];
+    public Population(){
         
-        for(int i=0; i<popSize; i++){
-            individuals[i] = new Individual(geneLength);
-            totalFitnessPopulation += individuals[i].calcIndFitness();
-            
-            System.out.println(Arrays.toString(individuals[i].getGenes()));
-//            System.out.println(individuals[i].getFitness());
-//            System.out.println(totalFitnessPopulation);
+        for(int i=0; i<Main.P; i++){
+            population[i] = new Individual();
+            totalFitnessPopulation += population[i].calFit();
+//            totalFitnessPopulation = getTotalFitnessPopulation(population[i]);
+            System.out.println("Genes: "+Arrays.toString(population[i].genes));
         }
         
-        
-        
     }
     
+//    public int getTotalFitnessPopulation(Individual ind) {
+//        totalFitnessPopulation += ind.calFit();
+//        return totalFitnessPopulation;
+//    }
+
     
-    public Individual[] getIndividuals() {
-        return individuals;
-    }
-
-    public void setIndividuals(Individual[] individuals) {
-        this.individuals = individuals;
-    }
-
-    public int getPopSize() {
-        return popSize;
-    }
-
-    public void setPopSize(int popSize) {
-        this.popSize = popSize;
-    }
-
-    public int getGeneLength() {
-        return geneLength;
-    }
-
-    public void setGeneLength(int geneLength) {
-        this.geneLength = geneLength;
-    }
+    
     
     
     

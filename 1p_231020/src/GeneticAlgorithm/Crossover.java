@@ -13,49 +13,53 @@ import java.util.Random;
  * @author Marken Tuan Nguyen
  */
 public class Crossover {
-   
-    Individual Child1, Child2;
-    Individual temp;
     
-    public Crossover (Individual stTest, Individual ndTest, int numberOfGenes) {
-        temp = new Individual(numberOfGenes);
+//    Individual[] offCross = new Individual[Main.P];
+    Individual temp = new Individual();
+    int totalFitnessCrossover, crossfit, sum = 0;
+    
+    public Crossover (Individual[] offSpring ) {
         
         Random rand = new Random();
-        int crossPoint = Math.abs(rand.nextInt(stTest.geneLength));
         
-        System.out.println("------------------------------------------------");
+        int crossPoint = Math.abs(rand.nextInt(Main.N));
         System.out.println("cross point: "+ (crossPoint+1));
-        System.out.println("------------------------------------------------");
-        System.out.println("BEFORE CROSSOVER:");
-        System.out.println("first test:\t"+ Arrays.toString(stTest.getGenes()));
-        System.out.println("second test:\t"+ Arrays.toString(ndTest.getGenes()));
-        System.out.println("------------------------------------------------");
-        for(int i=crossPoint; i<numberOfGenes; i++){        //swap head
-            temp.genes[i] = stTest.genes[i];
-            stTest.genes[i] = ndTest.genes[i];
-            ndTest.genes[i] = temp.genes[i];
+        
+        for(int i=0; i<Main.P; i+=2){   
+//            System.out.println("BEFORE CROSSOVER:");
+//            System.out.println("child1->: "+Arrays.toString(offSpring[i].genes));
+//            System.out.println("child2->: "+Arrays.toString(offSpring[i+1].genes));
+            
+            for(int j=crossPoint; j<Main.N; j++){
+                
+                this.temp.genes[j] = offSpring[i].genes[j];             //THIS....       
+                offSpring[i].genes[j] = offSpring[i+1].genes[j];
+                offSpring[i+1].genes[j] = temp.genes[j];
+            }
+            
+//            System.out.println("AFTER CROSSOVER:");
+//            System.out.println("child1->: "+Arrays.toString(offSpring[i].genes));
+//            System.out.println("child2->: "+Arrays.toString(offSpring[i+1].genes));
+//
+//            System.out.println("------------------------------------------------");
+            
         }
+//        this.offCross = offSpring;
+        totalFitnessCrossover += calCrossFitness(offSpring);
+        
+        
+    }
 
-        Child1 = stTest;
-	Child2 = ndTest;
-        
-        
-//        System.out.println("temp test:\t"+ Arrays.toString(temp.getGenes()));
-        
-    }
-    
-    public String getChild1(){
-        return "first test:\t"+ Arrays.toString(Child1.getGenes());
-    }
-    
-    public String getChild2(){
-        return "second test:\t"+ Arrays.toString(Child2.getGenes());
-    }
-    
-    @Override
-    public String toString(){
-        return getChild1() +"\n"+getChild2();
-    }
 	
+    public int calCrossFitness(Individual[] offtemp){
+        for(int i=0; i<Main.P; i++){
+            for(int j=0; j<Main.N; j++){
+                if(offtemp[i].genes[j]==1){
+                    crossfit++;
+                }
+            }
+        }
+        return crossfit;
+    }
     
 }
