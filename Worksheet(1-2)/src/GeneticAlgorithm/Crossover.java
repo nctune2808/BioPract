@@ -14,8 +14,8 @@ import java.util.Random;
  */
 public class Crossover {
     
-//    Individual[] offCross = new Individual[Main.P];
     Individual temp = new Individual();
+    Individual[] offCross;
     int totalFitnessCrossover, crossfit, sum = 0;
     
     public Crossover (Individual[] offSpring ) {
@@ -44,7 +44,7 @@ public class Crossover {
 //            System.out.println("------------------------------------------------");
             
         }
-//        this.offCross = offSpring;
+        this.offCross = offSpring;
         totalFitnessCrossover += calCrossFitness(offSpring);
         
         

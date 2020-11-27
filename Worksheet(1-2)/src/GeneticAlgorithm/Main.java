@@ -38,14 +38,17 @@ public class Main {
         System.out.println("================================================");
         
         Crossover crossover = new Crossover(off);
+        Individual[] offCr = crossover.offCross;
+//        System.out.println("offCross: "+ Arrays.toString(crossover.offCross[0].genes));
+//        System.out.println("offCross: "+ Arrays.toString(crossover.offCross[1].genes));
+//        System.out.println("offCross: "+ Arrays.toString(crossover.offCross[2].genes));
+//        System.out.println("offCross: "+ Arrays.toString(crossover.offCross[3].genes));
         System.out.println("Total Fitness CrossOver: "+ crossover.totalFitnessCrossover); 
         System.out.println("================================================");
-//        System.out.println("After Crossover:\n"+crossover.toString());
-//        
-//        mutation = new Mutation(numberOfGenes);
-//        
-////        System.out.println(population.calcPopFitness());
-////        System.out.println("Population of "+population.getIndividuals()+" individual(s).");
+        
+        Mutation mutation = new Mutation(offCr);
+        System.out.println("Total Fitness Mutution: "+ mutation.totalFitnessMutation); 
+        System.out.println("================================================");
 
     }
     

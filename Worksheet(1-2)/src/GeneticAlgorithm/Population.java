@@ -25,7 +25,7 @@ public class Population {
             population[i] = new Individual();
             totalFitnessPopulation += population[i].calFit();
 //            totalFitnessPopulation = getTotalFitnessPopulation(population[i]);
-            System.out.println("Genes: "+Arrays.toString(population[i].genes));
+//            System.out.println("Genes: "+Arrays.toString(population[i].genes));
         }
         
     }

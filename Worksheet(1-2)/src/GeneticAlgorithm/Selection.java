@@ -36,7 +36,7 @@ public class Selection {
 //            System.out.println("p1: " + Arrays.toString(population[parent1].genes)+ "\tF= "+population[parent1].fitness);
 //            System.out.println("p2: " + Arrays.toString(population[parent2].genes)+ "\tF= "+population[parent2].fitness);
 //            
-            System.out.println("select->: " + Arrays.toString(this.offSpring[i].genes) );
+//            System.out.println("select->: " + Arrays.toString(this.offSpring[i].genes) );
         }
         calSelectFitness();
     }
