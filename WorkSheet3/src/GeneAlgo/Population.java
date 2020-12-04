@@ -7,6 +7,7 @@ package GeneAlgo;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -76,7 +77,7 @@ public class Population {
         }
         //copy trinmed verson to normalised dataset
         double[][] normalizedDataset;
-        DecimalFormat df = new DecimalFormat("#.00");
+        DecimalFormat df = new DecimalFormat("#.##");
         normalizedDataset = new double[dataSet.length][dataSet[0].length];
 
         for (int i = 0; i < dataSet.length; i++) {
@@ -89,14 +90,15 @@ public class Population {
         normalizedTrainSet = new double[(int) (dataSet.length * 0.50)][dataSet[0].length];
         normalizedTesting = new double[(int) (dataSet.length * 0.50)][dataSet[0].length];
         for (int i = 0; i < normalizedDataset.length; i++) {
-//                System.out.println("normalizedDataset.length " +normalizedDataset.length);
-            if (i <= normalizedTrainSet.length - 1) {
+            
+            if (i < normalizedTrainSet.length) {
                 normalizedTrainSet[i] = normalizedDataset[i];
             } 
-//                else {
-//                    normalizedTesting[var] = normalizedDataset[i];
-//                    var++;
-//                }
+//            else {
+//                normalizedTesting[var] = normalizedDataset[i];
+//                System.out.println("normalizedTesting " +var);
+//                var++;
+//            }
         }
     }
     
@@ -108,6 +110,7 @@ public class Population {
             if (sumOfFitness > randomNumber) {
                 break;
             }
+//            System.out.println("sumFitness " + sumOfFitness);
             sumOfFitness += population[savedIndex].getFitness();
         }
         return population[savedIndex - 1];
@@ -178,6 +181,7 @@ public class Population {
             }
             averageFitness += population1.getFitness();
             totalFitness += population1.getFitness();
+//            System.out.println("Total fitness: "+totalFitness);
         }
         averageFitness = averageFitness / population.length;
     }

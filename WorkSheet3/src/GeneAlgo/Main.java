@@ -86,7 +86,7 @@ public class Main {
 //                chromosomeLengthTF.setEditable(false);
                 chromosomeLengthTF.setValue(7);
                 chromosomeSizeTF.setValue(16);
-                generatuinSizeTF.setValue(1000);
+                generatuinSizeTF.setValue(50);
             });
 
             datasetRadioBtn2.addActionListener((ActionEvent e) -> {
@@ -96,7 +96,7 @@ public class Main {
 //                chromosomeLengthTF.setEditable(false);
                 chromosomeLengthTF.setValue(7);
                 chromosomeSizeTF.setValue(32);
-                generatuinSizeTF.setValue(1000);
+                generatuinSizeTF.setValue(50);
             });
 
             datasetRadioBtn3.addActionListener((ActionEvent e) -> {
@@ -106,7 +106,7 @@ public class Main {
 //                chromosomeLengthTF.setEditable(true);
                 chromosomeLengthTF.setValue(10);
                 chromosomeSizeTF.setValue(64);
-                generatuinSizeTF.setValue(1000);
+                generatuinSizeTF.setValue(50);
             });
             
             runBtn.addActionListener((ActionEvent e) -> {
@@ -295,8 +295,8 @@ public class Main {
                     while (current <= Integer.parseInt(generatuinSizeTF.getValue()+"")) {
                         progress.setValue(current);
                         drawLine(current, x.getBestFitness(),x.getAverageFitness(),x.getWorstFitness());
-                        x.fitnessFunction();
                         x.selection();
+                        x.fitnessFunction();
                         x.crossover();
                         x.mutation();
                         x.newGeneration();
