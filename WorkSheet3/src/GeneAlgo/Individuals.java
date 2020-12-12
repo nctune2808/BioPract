@@ -23,7 +23,7 @@ public class Individuals {
     }
     
     public Individuals(Individuals nextGen) {
-        double temp[][] = nextGen.getChromosome();
+        double[][] temp = nextGen.getChromosome();
         chromosome = new double [temp.length][temp[0].length];
         for(int i = 0; i < temp.length; i++) {
             System.arraycopy(temp[i], 0, chromosome[i], 0, temp[i].length);
@@ -34,29 +34,23 @@ public class Individuals {
     public void fitnessFunction(double[][] dataset) {
         fitness = 0;
         boolean match = false;
-        for (double[] dataset1 : dataset) 
-        {
-            for (double[] rule : chromosome) 
-            {
-                for (int k = 0; k < dataset1.length - 1; k++) 
-                {
-                    if (((dataset1[k] >= 0.5) && (rule[k] >= 0.5)) ||
-                        ((dataset1[k] <= 0.5) && (rule[k] <= 0.5)) ||
-                         (dataset1[k] ==  rule[k])         ||
-                         (rule[k]     == 0.5)) {
+        for (double[] data : dataset) {
+            for (double[] rule : chromosome) {
+                for (int i = 0; i < data.length - 1; i++) {
+                    if (((data[i] >= 0.5) && (rule[i] >= 0.5)) ||
+                        ((data[i] <= 0.5) && (rule[i] <= 0.5)) ||
+                         (data[i] ==  rule[i])         ||
+                         (rule[i]     == 0.5)) {
 
                         match = true;
                     } 
-                    else 
-                    {
+                    else {
                         match = false;
                         break;
                     }
                 }
-                if (match == true) 
-                {
-                    if (dataset1[dataset1.length - 1] == rule[rule.length - 1]) 
-                    {
+                if (match == true) {
+                    if (data[data.length - 1] == rule[rule.length - 1]) {
                         fitness++;
                     }
                     break;
@@ -66,10 +60,10 @@ public class Individuals {
     }
     
     public void createChromosome() {
-        DecimalFormat df = new DecimalFormat("#.##");
+        
         for (double[] rule : chromosome) {
-            for (int j = 0; j < rule.length - 1; j++) {
-                rule[j] = (new Random().nextInt(3) == 2) ? 0.50 : Double.parseDouble(df.format(Math.random())); // 0.05 is the wildcard
+            for (int j = 0; j < rule.length-1; j++) {
+                rule[j] = (new Random().nextInt(3) == 2) ? 0.50 : Double.parseDouble(new DecimalFormat("#.##").format(Math.random())); // 0.05 is the wildcard
             }
             rule[rule.length - 1] = new Random().nextInt(2); 
         }
@@ -77,7 +71,7 @@ public class Individuals {
     
     public void mutation(double rate) {
         for (double[] rule : chromosome) {
-            for (int j = 0; j < rule.length - 1; j++) {
+            for (int j = 0; j < rule.length-1; j++) {
                 if (rate <= Math.random()) {
                     rule[j] = (new Random().nextInt(3) == 2) ? 0.50 : Double.parseDouble(new DecimalFormat("#.##").format(Math.random())); // 0.05 is the wildcard
                 }

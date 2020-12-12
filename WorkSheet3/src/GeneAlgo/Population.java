@@ -16,13 +16,13 @@ import java.util.Scanner;
  * @author Marken Tuan Nguyen
  */
 public class Population {
-    double dataset[][];
-    private double [][] normalizedTrainSet;
-    private double [][] normalizedTesting;
+    double[][] dataset;
+    private double[][] normalizedTrainSet;
+    private double[][] normalizedTesting;
     Individuals[] population;
     Individuals[] mateingPool;
     double mutationRate;
-    int PopulationSize;
+    int populationSize;
     int chromosomeLength;
     int chromosomeSize;
 
@@ -35,12 +35,12 @@ public class Population {
     public Population(double mutation, int PopSize, int choromLen, int choromSize) {
             
         this.mutationRate = mutation;
-        this.PopulationSize = PopSize;
+        this.populationSize = PopSize;
         this.chromosomeLength = choromLen;
         this.chromosomeSize = choromSize;
 
-        population = new Individuals[PopulationSize];
-        mateingPool = new Individuals[PopulationSize];
+        population = new Individuals[populationSize];
+        mateingPool = new Individuals[populationSize];
 
         for (int i = 0; i < population.length; i++) {
             population[i] = new Individuals(chromosomeSize, chromosomeLength);
@@ -77,29 +77,49 @@ public class Population {
         }
         //copy trinmed verson to normalised dataset
         double[][] normalizedDataset;
-        DecimalFormat df = new DecimalFormat("#.##");
         normalizedDataset = new double[dataSet.length][dataSet[0].length];
 
         for (int i = 0; i < dataSet.length; i++) {
             for (int j = 0; j < dataSet[i].length; j++) {
-                normalizedDataset[i][j] = Double.parseDouble(df.format(dataSet[i][j]));
+                normalizedDataset[i][j] = Double.parseDouble(new DecimalFormat("#.##").format(dataSet[i][j]));
             }
         }
         //split into traing and testing sets
         int var = 0;
         normalizedTrainSet = new double[(int) (dataSet.length * 0.50)][dataSet[0].length];
         normalizedTesting = new double[(int) (dataSet.length * 0.50)][dataSet[0].length];
+                System.out.println("normalizedTesting " +normalizedDataset.length);
         for (int i = 0; i < normalizedDataset.length; i++) {
             
             if (i < normalizedTrainSet.length) {
                 normalizedTrainSet[i] = normalizedDataset[i];
+//                System.out.println("normalized TRAIN " +i);
             } 
 //            else {
 //                normalizedTesting[var] = normalizedDataset[i];
-//                System.out.println("normalizedTesting " +var);
 //                var++;
-//            }
+//            };
         }
+    }
+    
+    public void fitnessFunction() {
+        totalFitness = 0;
+        bestFitness = 0;
+        worstFitness = population[0].getFitness();
+        averageFitness = 0;
+        for (Individuals pop : population) {
+            pop.fitnessFunction(normalizedTrainSet);
+            if (bestFitness < pop.getFitness()) {
+                bestFitness = pop.getFitness();
+            }
+            if (worstFitness > pop.getFitness()) {
+                worstFitness = pop.getFitness();
+            }
+            averageFitness += pop.getFitness();
+            totalFitness += pop.getFitness();
+//            System.out.println("Total fitness: "+totalFitness);
+        }
+        averageFitness = averageFitness / population.length;
     }
     
     private Individuals rouletteWheelSelection() {
@@ -110,7 +130,6 @@ public class Population {
             if (sumOfFitness > randomNumber) {
                 break;
             }
-//            System.out.println("sumFitness " + sumOfFitness);
             sumOfFitness += population[savedIndex].getFitness();
         }
         return population[savedIndex - 1];
@@ -146,8 +165,8 @@ public class Population {
     }
     
     public void mutation() {
-        for (Individuals matingpool1 : mateingPool) {
-            matingpool1.mutation(mutationRate);
+        for (Individuals pool : mateingPool) {
+            pool.mutation(mutationRate);
         }
     }
 
@@ -166,25 +185,7 @@ public class Population {
         }
     }
     
-    public void fitnessFunction() {
-        totalFitness = 0;
-        bestFitness = 0;
-        worstFitness = population[0].getFitness();
-        averageFitness = 0;
-        for (Individuals population1 : population) {
-            population1.fitnessFunction(normalizedTrainSet);
-            if (bestFitness < population1.getFitness()) {
-                bestFitness = population1.getFitness();
-            }
-            if (worstFitness > population1.getFitness()) {
-                worstFitness = population1.getFitness();
-            }
-            averageFitness += population1.getFitness();
-            totalFitness += population1.getFitness();
-//            System.out.println("Total fitness: "+totalFitness);
-        }
-        averageFitness = averageFitness / population.length;
-    }
+    
     
     public int getBestFitness() {
         return bestFitness;

@@ -47,17 +47,17 @@ public class Main {
         JFrame frame = new JFrame("Control Panel");
         JPanel optionsPanel = new JPanel();
         JPanel chartPanel = new JPanel();
-        JRadioButton datasetRadioBtn1 = new JRadioButton("data1.txt");
-        JRadioButton datasetRadioBtn2 = new JRadioButton("data2.txt");
-        JRadioButton datasetRadioBtn3 = new JRadioButton("data3.txt");
+        JRadioButton radioBtn1 = new JRadioButton("data1.txt");
+        JRadioButton radioBtn2 = new JRadioButton("data2.txt");
+        JRadioButton radioBtn4 = new JRadioButton("data4.txt");
         ButtonGroup datasetsBtn = new ButtonGroup();
         
         NumberFormatter nf = new NumberFormatter();
-        JFormattedTextField mutationRateTF = new JFormattedTextField(nf);
-        JFormattedTextField populationSizeTF = new JFormattedTextField(nf);
-        JFormattedTextField chromosomeLengthTF = new JFormattedTextField(nf);
-        JFormattedTextField chromosomeSizeTF = new JFormattedTextField(nf);
-        JFormattedTextField generatuinSizeTF = new JFormattedTextField(nf);
+        JFormattedTextField mutationRate  = new JFormattedTextField(nf);
+        JFormattedTextField populationSize  = new JFormattedTextField(nf);
+        JFormattedTextField chromosomeLength  = new JFormattedTextField(nf);
+        JFormattedTextField chromosomeSize  = new JFormattedTextField(nf);
+        JFormattedTextField generatuinSize  = new JFormattedTextField(nf);
         JButton runBtn = new JButton("Run");
         JProgressBar progress = new JProgressBar();
         XYSeries best = new XYSeries("Best Fitness");
@@ -77,61 +77,62 @@ public class Main {
         
         private void functions() {
             
-            datasetRadioBtn1.addActionListener((ActionEvent e) -> {
+            radioBtn1.addActionListener((ActionEvent e) -> {
                 frame.repaint();
                 optionsPanel.repaint();
                 
-                populationSizeTF.setValue(50);
-                mutationRateTF.setValue(0.02);
-//                chromosomeLengthTF.setEditable(false);
-                chromosomeLengthTF.setValue(7);
-                chromosomeSizeTF.setValue(16);
-                generatuinSizeTF.setValue(50);
+                populationSize .setValue(1000);
+                mutationRate .setValue(0.02);
+                chromosomeLength .setValue(7);
+                chromosomeSize .setValue(32);
+                generatuinSize .setValue(200);
             });
 
-            datasetRadioBtn2.addActionListener((ActionEvent e) -> {
-                
-                populationSizeTF.setValue(50);
-                mutationRateTF.setValue(0.02);
-//                chromosomeLengthTF.setEditable(false);
-                chromosomeLengthTF.setValue(7);
-                chromosomeSizeTF.setValue(32);
-                generatuinSizeTF.setValue(50);
+            radioBtn2.addActionListener((ActionEvent e) -> {
+                frame.repaint();
+                optionsPanel.repaint();
+                populationSize .setValue(1000);
+                mutationRate .setValue(0.02);
+                chromosomeLength .setValue(7);
+                chromosomeSize .setValue(32);
+                generatuinSize .setValue(200);
             });
 
-            datasetRadioBtn3.addActionListener((ActionEvent e) -> {
-                
-                populationSizeTF.setValue(50);
-                mutationRateTF.setValue(0.02);
-//                chromosomeLengthTF.setEditable(true);
-                chromosomeLengthTF.setValue(10);
-                chromosomeSizeTF.setValue(64);
-                generatuinSizeTF.setValue(50);
+            radioBtn4.addActionListener((ActionEvent e) -> {
+                frame.repaint();
+                optionsPanel.repaint();
+                populationSize .setValue(1000);
+                mutationRate .setValue(0.02);
+                chromosomeLength .setValue(11);
+                chromosomeSize .setValue(512);
+                generatuinSize .setValue(200);
             });
             
             runBtn.addActionListener((ActionEvent e) -> {
-                 double mRate = Double.parseDouble(mutationRateTF.getValue()+"");
-                 int pop = Integer.parseInt(populationSizeTF.getValue()+"");
-                 int chroLen = Integer.parseInt(chromosomeLengthTF.getValue()+"");
-                 int chroSize = Integer.parseInt(chromosomeSizeTF.getValue()+"");
+                 double mRate = Double.parseDouble(mutationRate .getValue()+"");
+                 int pop = Integer.parseInt(populationSize .getValue()+"");
+                 int chroLen = Integer.parseInt(chromosomeLength .getValue()+"");
+                 int chroSize = Integer.parseInt(chromosomeSize .getValue()+"");
                  String dataSet;
-                 if(datasetRadioBtn3.isSelected()) {
-                    dataSet = datasetRadioBtn3.getText();
-                    lineGraph.setTitle("Pop size: " + populationSizeTF.getValue() + ", Mutation: " + mutationRateTF.getValue() + ", Chromosome Size: " + chromosomeSizeTF.getValue() + ", Total Generation: " + generatuinSizeTF.getValue() + ", " +dataSet);
-                    progress.setMaximum(Integer.parseInt(generatuinSizeTF.getValue()+""));
-                    algrithmFP(mRate,pop,chroLen,chroSize,dataSet );
+                 if(radioBtn4.isSelected()) {
+                    dataSet = radioBtn4.getText();
+//                    lineGraph.setTitle("Pop size: " + populationSize .getValue() + ", Mutation: " + mutationRate .getValue() + ", Chromosome Size: " + chromosomeSize .getValue() + ", Total Generation: " + generatuinSize .getValue() + ", " +dataSet);
+                    lineGraph.setTitle("Dataset 4");
+                    progress.setMaximum(Integer.parseInt(generatuinSize .getValue()+""));
+                    algrithm (mRate,pop,chroLen,chroSize,dataSet );
                  }
-                 else if(datasetRadioBtn2.isSelected()) {
-                    dataSet = datasetRadioBtn2.getText();
-                    lineGraph.setTitle("Pop size: " + populationSizeTF.getValue() + ", Mutation: " + mutationRateTF.getValue() + ", Chromosome Size: " + chromosomeSizeTF.getValue() + ", Total Generation: " + generatuinSizeTF.getValue() + ", " +dataSet);
-                    progress.setMaximum(Integer.parseInt(generatuinSizeTF.getValue()+""));
-                    algrithmFP(mRate,pop,chroLen,chroSize,dataSet );
+                 else if(radioBtn2.isSelected()) {
+                    dataSet = radioBtn2.getText();
+//                    lineGraph.setTitle("Pop size: " + populationSize .getValue() + ", Mutation: " + mutationRate .getValue() + ", Chromosome Size: " + chromosomeSize .getValue() + ", Total Generation: " + generatuinSize .getValue() + ", " +dataSet);
+                    lineGraph.setTitle("Dataset 2");
+                    algrithm (mRate,pop,chroLen,chroSize,dataSet );
                  }
                  else {
-                    dataSet = datasetRadioBtn1.getText();
-                    lineGraph.setTitle("Pop size: " + populationSizeTF.getValue() + ", Mutation: " + mutationRateTF.getValue() + ", Chromosome Size: " + chromosomeSizeTF.getValue() + ", Total Generation: " + generatuinSizeTF.getValue() + ", " +dataSet);
-                    progress.setMaximum(Integer.parseInt(generatuinSizeTF.getValue()+""));
-                    algrithmFP(mRate,pop,chroLen,chroSize,dataSet );
+                    dataSet = radioBtn1.getText();
+//                    lineGraph.setTitle("Pop size: " + populationSize .getValue() + ", Mutation: " + mutationRate .getValue() + ", Chromosome Size: " + chromosomeSize .getValue() + ", Total Generation: " + generatuinSize .getValue() + ", " +dataSet);
+                    lineGraph.setTitle("Dataset 1");
+                    progress.setMaximum(Integer.parseInt(generatuinSize .getValue()+""));
+                    algrithm (mRate,pop,chroLen,chroSize,dataSet );
                  }
             });
         }
@@ -158,25 +159,24 @@ public class Main {
         private void radioBtnSetup() {
             GridBagConstraints gbc = new GridBagConstraints();
             
-            datasetsBtn.add(datasetRadioBtn1);
-            datasetsBtn.add(datasetRadioBtn2);
-            datasetsBtn.add(datasetRadioBtn3);
+            datasetsBtn.add(radioBtn1);
+            datasetsBtn.add(radioBtn2);
+            datasetsBtn.add(radioBtn4);
 
-//            datasetsBtn.setSelected(datasetRadioBtn1.getModel(), true);
-            datasetRadioBtn1.setBackground(Color.WHITE);
-            datasetRadioBtn2.setBackground(Color.WHITE);
-            datasetRadioBtn3.setBackground(Color.WHITE);
+            radioBtn1.setBackground(Color.WHITE);
+            radioBtn2.setBackground(Color.WHITE);
+            radioBtn4.setBackground(Color.WHITE);
             
             gbc.gridx = 0;
             gbc.gridy = 0;
             gbc.insets = new Insets(10, 10, 15, 10);
-            optionsPanel.add(datasetRadioBtn1, gbc);
+            optionsPanel.add(radioBtn1, gbc);
             gbc.gridx = 1;
             gbc.gridy = 0;
-            optionsPanel.add(datasetRadioBtn2, gbc);
+            optionsPanel.add(radioBtn2, gbc);
             gbc.gridx = 2;
             gbc.gridy = 0;
-            optionsPanel.add(datasetRadioBtn3, gbc);
+            optionsPanel.add(radioBtn4, gbc);
         }
         
         private void chartSetup(String title){
@@ -186,7 +186,7 @@ public class Main {
             dataCollection.addSeries(avrg);
             dataCollection.addSeries(worst);
             
-            lineGraph = ChartFactory.createXYLineChart(title, "No. Of Generations", "Fitness Values", dataCollection);
+            lineGraph = ChartFactory.createXYLineChart(title, "Number of Generations", "Fitness Values", dataCollection);
             
             chartPanel.add(new ChartPanel (lineGraph), BorderLayout.CENTER);
             
@@ -229,23 +229,23 @@ public class Main {
 
             gbc.gridx = 2;
             gbc.gridy = 2;
-            optionsPanel.add(mutationRateTF, gbc);
+            optionsPanel.add(mutationRate , gbc);
             
             gbc.gridx = 2;
             gbc.gridy = 4;
-            optionsPanel.add(populationSizeTF,gbc);
+            optionsPanel.add(populationSize ,gbc);
             
             gbc.gridx = 2;
             gbc.gridy = 6;
-            optionsPanel.add(chromosomeLengthTF, gbc);
+            optionsPanel.add(chromosomeLength , gbc);
             
             gbc.gridx = 2;
             gbc.gridy = 8;
-            optionsPanel.add(chromosomeSizeTF, gbc);
+            optionsPanel.add(chromosomeSize , gbc);
             
             gbc.gridx = 2;
             gbc.gridy = 10;
-            optionsPanel.add(generatuinSizeTF, gbc);
+            optionsPanel.add(generatuinSize , gbc);
         }
         
         private void progressBarSetup() {
@@ -283,7 +283,7 @@ public class Main {
             worst.add(currentgenerations, worstfitness);
         }
         
-        public void algrithmFP(double mutation, int Population, int chromosomeLen, int chromosomeSize, String file) {
+        public void algrithm (double mutation, int Population, int chromosomeLen, int chromosomeSize, String file) {
             runBtn.setEnabled(false);
             Thread t = new Thread(){
                 @Override
@@ -292,7 +292,7 @@ public class Main {
                     
                     x.getDatasetData(file);
                     int current = 0;
-                    while (current <= Integer.parseInt(generatuinSizeTF.getValue()+"")) {
+                    while (current <= Integer.parseInt(generatuinSize .getValue()+"")) {
                         progress.setValue(current);
                         drawLine(current, x.getBestFitness(),x.getAverageFitness(),x.getWorstFitness());
                         x.selection();
