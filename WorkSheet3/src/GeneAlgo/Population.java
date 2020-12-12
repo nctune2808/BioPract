@@ -20,7 +20,7 @@ public class Population {
     private double[][] normalizedTrainSet;
     private double[][] normalizedTesting;
     Individuals[] population;
-    Individuals[] mateingPool;
+    Individuals[] matingPool;
     double mutationRate;
     int populationSize;
     int chromosomeLength;
@@ -40,7 +40,7 @@ public class Population {
         this.chromosomeSize = choromSize;
 
         population = new Individuals[populationSize];
-        mateingPool = new Individuals[populationSize];
+        matingPool = new Individuals[populationSize];
 
         for (int i = 0; i < population.length; i++) {
             population[i] = new Individuals(chromosomeSize, chromosomeLength);
@@ -75,6 +75,8 @@ public class Population {
                 dataSet[i][j] = tempList.get(i)[j];
             }
         }
+        
+//        System.out.println(dataSet[0].length);
         //copy trinmed verson to normalised dataset
         double[][] normalizedDataset;
         normalizedDataset = new double[dataSet.length][dataSet[0].length];
@@ -88,17 +90,19 @@ public class Population {
         int var = 0;
         normalizedTrainSet = new double[(int) (dataSet.length * 0.50)][dataSet[0].length];
         normalizedTesting = new double[(int) (dataSet.length * 0.50)][dataSet[0].length];
-                System.out.println("normalizedTesting " +normalizedDataset.length);
+//                System.out.println("normalizedTesting " +normalizedDataset.length);
         for (int i = 0; i < normalizedDataset.length; i++) {
             
             if (i < normalizedTrainSet.length) {
                 normalizedTrainSet[i] = normalizedDataset[i];
+                System.out.println("<<<"+Arrays.toString(normalizedDataset[i]));
 //                System.out.println("normalized TRAIN " +i);
             } 
-//            else {
-//                normalizedTesting[var] = normalizedDataset[i];
-//                var++;
-//            };
+            else {
+                normalizedTesting[var] = normalizedDataset[i];
+                System.out.println(">>>"+Arrays.toString(normalizedDataset[i]));
+                var++;
+            };
         }
     }
     
@@ -141,7 +145,7 @@ public class Population {
         children[1] =  new Individuals(parent2);
         Random rand = new Random();
         int crossoverPoint = rand.nextInt(chromosomeLength*chromosomeSize);
-        int pointer  =0;
+        int pointer = 0;
         for(int i = 0; i < parent1.getChromosome().length; i++) {
             for(int j = 0; j < parent1.getChromosome()[i].length; j++) {
                 if(pointer < crossoverPoint) {
@@ -160,28 +164,28 @@ public class Population {
         
     public void newGeneration() {
         for(int i = 0; i < population.length; i++) {
-            population[i] = new Individuals(mateingPool[i]);
+            population[i] = new Individuals(matingPool[i]);
         }
     }
     
     public void mutation() {
-        for (Individuals pool : mateingPool) {
+        for (Individuals pool : matingPool) {
             pool.mutation(mutationRate);
         }
     }
 
     public void crossover() {
-        for (int i = 0; i < mateingPool.length / 2; i++) {
+        for (int i = 0; i < matingPool.length / 2; i++) {
             int offset = i * 2;
-            Individuals[] children = singlePointCrossover(mateingPool[offset], mateingPool[offset + 1]);
-            mateingPool[i] = children[0];
-            mateingPool[i + 1] = children[1];
+            Individuals[] children = singlePointCrossover(matingPool[offset], matingPool[offset + 1]);
+            matingPool[i] = children[0];
+            matingPool[i + 1] = children[1];
         }
     }
 
     public void selection() {
-        for (int i = 0; i < mateingPool.length; i++) {
-            mateingPool[i] = rouletteWheelSelection();
+        for (int i = 0; i < matingPool.length; i++) {
+            matingPool[i] = rouletteWheelSelection();
         }
     }
     

@@ -85,7 +85,7 @@ public class Main {
                 mutationRate .setValue(0.02);
                 chromosomeLength .setValue(7);
                 chromosomeSize .setValue(32);
-                generatuinSize .setValue(200);
+                generatuinSize .setValue(400);
             });
 
             radioBtn2.addActionListener((ActionEvent e) -> {
@@ -95,7 +95,7 @@ public class Main {
                 mutationRate .setValue(0.02);
                 chromosomeLength .setValue(7);
                 chromosomeSize .setValue(32);
-                generatuinSize .setValue(200);
+                generatuinSize .setValue(400);
             });
 
             radioBtn4.addActionListener((ActionEvent e) -> {
@@ -104,8 +104,8 @@ public class Main {
                 populationSize .setValue(1000);
                 mutationRate .setValue(0.02);
                 chromosomeLength .setValue(11);
-                chromosomeSize .setValue(512);
-                generatuinSize .setValue(200);
+                chromosomeSize .setValue(64);
+                generatuinSize .setValue(400);
             });
             
             runBtn.addActionListener((ActionEvent e) -> {
@@ -186,7 +186,7 @@ public class Main {
             dataCollection.addSeries(avrg);
             dataCollection.addSeries(worst);
             
-            lineGraph = ChartFactory.createXYLineChart(title, "Number of Generations", "Fitness Values", dataCollection);
+            lineGraph = ChartFactory.createXYLineChart(title, "Generations", "Fitness", dataCollection);
             
             chartPanel.add(new ChartPanel (lineGraph), BorderLayout.CENTER);
             
@@ -292,7 +292,8 @@ public class Main {
                     
                     x.getDatasetData(file);
                     int current = 0;
-                    while (current <= Integer.parseInt(generatuinSize .getValue()+"")) {
+                    while (current <= Integer.parseInt(generatuinSize.getValue()+"")) {
+                        System.out.println(current);
                         progress.setValue(current);
                         drawLine(current, x.getBestFitness(),x.getAverageFitness(),x.getWorstFitness());
                         x.selection();
@@ -301,7 +302,7 @@ public class Main {
                         x.mutation();
                         x.newGeneration();
                         current++;
-                        System.out.println(current);
+                       
                     }
                     runBtn.setEnabled(true);
                 }
