@@ -95,14 +95,13 @@ public class Population {
             
             if (i < normalizedTrainSet.length) {
                 normalizedTrainSet[i] = normalizedDataset[i];
-                System.out.println("<<<"+Arrays.toString(normalizedDataset[i]));
-//                System.out.println("normalized TRAIN " +i);
+//                System.out.println("<<<"+Arrays.toString(normalizedDataset[i]));
             } 
             else {
                 normalizedTesting[var] = normalizedDataset[i];
-                System.out.println(">>>"+Arrays.toString(normalizedDataset[i]));
+//                System.out.println(">>>"+Arrays.toString(normalizedDataset[i]));
                 var++;
-            };
+            }
         }
     }
     
@@ -148,7 +147,7 @@ public class Population {
         int pointer = 0;
         for(int i = 0; i < parent1.getChromosome().length; i++) {
             for(int j = 0; j < parent1.getChromosome()[i].length; j++) {
-                if(pointer < crossoverPoint) {
+                if(pointer <= crossoverPoint) {
                     double temp = children[0].getChromosome()[i][j];
                     children[0].getChromosome()[i][j] = children[1].getChromosome()[i][j];
                     children[1].getChromosome()[i][j] = temp;
@@ -156,7 +155,7 @@ public class Population {
                 else break;
                 pointer++;
             }
-            if(pointer >= crossoverPoint)
+            if(pointer > crossoverPoint)
                 break;
         }
         return children;

@@ -34,13 +34,14 @@ public class Individuals {
     public void fitnessFunction(double[][] dataset) {
         fitness = 0;
         boolean match = false;
+                
         for (double[] data : dataset) {
             for (double[] rule : chromosome) {
                 for (int i = 0; i < data.length - 1; i++) {
                     if (((data[i] >= 0.5) && (rule[i] >= 0.5)) ||
                         ((data[i] <= 0.5) && (rule[i] <= 0.5)) ||
-                         (data[i] ==  rule[i])         ||
-                         (rule[i]     == 0.5)) {
+                         (data[i] == rule[i])                  ||
+                         (rule[i] == 0.5)) {
 
                         match = true;
                     } 
