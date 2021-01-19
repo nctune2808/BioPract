@@ -44,7 +44,7 @@ public class Main {
     }
     
     public class ControlPanel {
-        JFrame frame = new JFrame("Control Panel");
+        JFrame frame = new JFrame("GENETIC ALGORITHM CHARTS");
         JPanel optionsPanel = new JPanel();
         JPanel chartPanel = new JPanel();
         JRadioButton radioBtn1 = new JRadioButton("data1.txt");
