@@ -1,0 +1,56 @@
+
+# one point crossover
+def crossover(offspring):
+    cross_offsprings = []
+
+    for i in range(0, P, 2):
+        off1 = Individual()
+        off2 = Individual()
+
+        # 2 heads and 2 tails
+        head1 = []
+        tail1 = []
+        head2 = []
+        tail2 = []
+
+        cross_point = random.randint(0, N - 1)
+
+        for j in range(0, cross_point):     # head from 0 to crosspoint
+            head1.append(offspring[i].gene[j])
+            head2.append(offspring[i + 1].gene[j])
+
+        for j in range(cross_point, N):     # tail from crosspoint to N
+            tail1.append(offspring[i].gene[j])
+            tail2.append(offspring[i + 1].gene[j])
+
+        off1.gene = head1 + tail2           # 1st gene be released after crossover
+        off1.fitness = gene_fitness(off1)   # 1st gene be counted fitness
+        cross_offsprings.append(off1)       # 1st gene be added to new population after crossover
+
+        off2.gene = head2 + tail1           # 2nd gene be released after crossover
+        off2.fitness = gene_fitness(off2)   # 2nd gene be counted fitness
+        cross_offsprings.append(off2)       # 2nd gene be added to new population after crossover
+
+    return cross_offsprings
+
+
+# bit-wise mutation
+def mutation(cross_offsprings):
+    mut_offsprings = []
+
+    for i in range(0, P):
+        new_ind = Individual();
+        new_ind.gene = []
+        for j in range(0, N):
+            gene = cross_offsprings[i].gene[j]
+            mut_prob = random.randint(0, 100)
+            if mut_prob < (100 * 0.03):
+                if gene == 1:           # if gene value is equal 1 reset to 0
+                    gene = 0
+                else:                   # else flip it to 1
+                    gene = 1
+            new_ind.gene.append(gene)   # add gene to new individual
+        new_ind.fitness = gene_fitness(new_ind) # count its fitness
+        mut_offsprings.append(new_ind)  # add new release to new population after mutation
+
+    return mut_offsprings

@@ -1,0 +1,32 @@
+
+#initialise population
+def init_population():
+    population = []
+    for i in range(0, P):
+        temp_gene = []
+        for i in range(0, N):
+            temp_gene.append(random.randint(0, 1))  # a random gene between 0 and 1
+
+        new_ind = Individual()  # initialise new instance
+        new_ind.gene = temp_gene.copy()  # copy the gene from temp_gene and assign to gene of individual
+        new_ind.fitness = gene_fitness(new_ind)  # initialise instance's fitness
+
+        print(temp_gene, " -> ", new_ind.fitness)
+        population.append(new_ind)
+
+    return population
+
+
+# tournament selection
+def TNS(population):
+    offsprings = []
+    for i in range(0, P):
+        parent1 = random.randint(0, P - 1)
+        off1 = population[parent1]
+        parent2 = random.randint(0, P - 1)
+        off2 = population[parent2]
+        if off1.fitness > off2.fitness:  # if one's fitness higher then add to temp offsprings
+            offsprings.append(off1)
+        else:
+            offsprings.append(off2)
+    return offsprings
