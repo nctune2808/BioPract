@@ -54,3 +54,103 @@ def mutation(cross_offsprings):
         mut_offsprings.append(new_ind)  # add new release to new population after mutation
 
     return mut_offsprings
+
+
+
+# optimisation
+def optimising(population, new_population):
+    # sorting instance with descending fitness
+    population = sorting(population)
+
+    # take two instances with the best fitness in the old population at index 0 and index 1
+    bestFit_old_1 = population[0]
+    bestFit_old_2 = population[1]
+
+    # overwrite the old population with mutate_offspring
+    population = copy.deepcopy(new_population)
+
+    # sorting instance with descending fitness
+    population = sorting(population)
+
+    # after deepcopy new pop to old pop
+    # take the two instance with the worst fitness in the new population at index -1 and index -2
+    worstFit_new_1 = population[-1]
+    worstFit_new_2 = population[-2]
+
+    # compare the fitness btw the ones in the old pop and the ones in the new pop
+    # replace the two worst fitness/gene by the two best fitness/gene at specific index in the new population
+    if bestFit_old_1.fitness > worstFit_new_1.fitness:
+        population[-1].fitness = bestFit_old_1.fitness
+        population[-1].gene = bestFit_old_1.gene
+    if bestFit_old_2.fitness > worstFit_new_2.fitness:
+        population[-2].fitness = bestFit_old_2.fitness
+        population[-2].gene = bestFit_old_2.gene
+
+    return population
+
+
+
+
+def genetic_algorithm(population, selection, MUTRATE, MUTSTEP):
+    # storing data to plot
+    meanFit_values = []
+    maxFit_values = []
+
+    for gen in range(0, GENERATIONS):
+        # TN / RW selection process
+        offsprings = selection(population)
+
+        # crossover process
+        cross_offsprings = crossover(offsprings)
+        # mutation process
+        mut_offsprings = mutation(cross_offsprings, MUTRATE, MUTSTEP)
+        # optimising
+        population = optimising(population, mut_offsprings)
+
+        # calculate Max and Mean Fitness
+        # storing fitness in a list
+        Fit = []
+        for ind in population:
+            Fit.append(gene_fitness(ind))
+        # print(Fit)
+
+        maxFit = max(Fit)  # take out the max fitness among fitness in Fit
+        meanFit = sum(Fit) / P  # sum all the fitness and divide by Population size
+
+        # append maxFit and meanFit respectively to MaxFit_values and MeanFit_values
+        maxFit_values.append(maxFit)
+        meanFit_values.append(meanFit)
+
+        # display
+        # print("GENERATION " + str(gen + 1))
+    print("Max Fitness: " + str(maxFit) + "\n")
+    print("Mean Fitness: " + str(meanFit) + "\n")
+
+    return maxFit_values, meanFit_values
+
+
+#  Storing
+maxFit_data1 = []
+maxFit_data2 = []
+maxFit_data3 = []
+maxFit_data4 = []
+
+
+# [----------------- Uncomment for testing -----------------]
+# N = 50
+# plt.title("Maximisation GA \n Tournament and Roulette Wheel Selection \n"
+#             + "N = " + str(N) + " MUTRATE = " + str(MUTRATE) + " MUTSTEP = " + str(MUTSTEP))
+#
+# # initialise original population
+# population = init_population()
+#
+# maxFit_data1, meanFit_data1 = genetic_algorithm(population, TNS, MUTRATE, MUTSTEP)
+# maxFit_data2, meanFit_data2 = genetic_algorithm(population, RWS, MUTRATE, MUTSTEP)
+#
+# plt.plot(maxFit_data1, label="Tournament")
+# plt.plot(maxFit_data2, label="Roulette Wheel")
+#
+#
+# # DISPLAY PLOT
+# plt.legend(loc="lower right")
+# plt.show()

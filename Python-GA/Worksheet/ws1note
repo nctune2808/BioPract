@@ -46,3 +46,25 @@ def TNS(population):
         else:
             offsprings.append(off2)
     return offsprings
+
+
+# roulette wheel selection
+def RWS(population):
+    # total fitness of initial pop
+    initial_fits = total_fitness(population)
+
+    offspring = copy.deepcopy(population)
+    # Roulette Wheel Selection Process
+    # Select two parents and recombine pairs of parents
+    for i in range(0, P):
+        selection_point = random.uniform(0.0, initial_fits)
+        running_total = 0
+        j = 0
+        while running_total <= selection_point:
+            running_total += population[j].fitness
+            j += 1
+            if(j == P):
+                break
+        offspring[i] = population[j-1]
+
+    return offspring
