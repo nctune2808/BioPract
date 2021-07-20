@@ -1,3 +1,19 @@
+# calculate individual's fitness
+def gene_fitness(individual):
+    fitness = 0
+    for i in range(0, N):
+        if individual.gene[i] == 1:  # if gene at index i equals to 1
+            fitness = fitness + individual.gene[i]
+    return fitness
+
+
+# calculate population's fitness
+def total_fitness(population):
+    total_fitness = 0
+    for individual in population:
+        total_fitness += individual.fitness
+    return total_fitness
+
 
 #initialise population
 def init_population():
