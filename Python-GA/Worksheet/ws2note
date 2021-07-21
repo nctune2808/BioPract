@@ -13,7 +13,7 @@ def crossover(offspring):
         head2 = []
         tail2 = []
 
-        cross_point = random.randint(0, N - 1)
+        cross_point = random.randint(1, N - 1)
 
         for j in range(0, cross_point):     # head from 0 to crosspoint
             head1.append(offspring[i].gene[j])
