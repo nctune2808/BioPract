@@ -11,7 +11,7 @@ class Individual:
     def __repr__(self):
         return "Gene string " + "".join(str(i) for i in self.gene) + " - fitness: " + str(self.fitness) + "\n"
 
-P = 50
+P = 20000
 N = 20
 MUTRATE = 0.03
 MUTSTEP = 1.0
