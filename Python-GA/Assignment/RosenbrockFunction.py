@@ -11,20 +11,22 @@ class Individual:
     def __repr__(self):
         return "Gene string " + "".join(str(i) for i in self.gene) + " - fitness: " + str(self.fitness) + "\n"
 
-
 P = 50
 N = 20
 MUTRATE = 0.03
 MUTSTEP = 1.0
-
+GENERATIONS = 150
 
 def minimisation(individual):
     fitness = 0
-    n = 20
-    for i in range(1, n-1):
-        part1 = 100 * (math.pow(individual.gene[i+1] - math.pow(individual.gene[i], 2), 2))
-        part2 = math.pow(1 - individual.gene[i], 2)
-        fitness += part1 + part2
+    # for i in range(0, N-1):
+    #     fitness += 100 * (individual.gene[i + 1] - (individual.gene[i] ** 2)) ** 2 + (1 - individual.gene[i]) ** 2
+    # return fitness
+
+    for i in range(0, N-1):
+        part1 = individual.gene[i+1] - math.pow(individual.gene[i], 2)
+        part2 = math.pow((1 - individual.gene[i]), 2)
+        fitness += 100 * math.pow(part1, 2) + part2
     return fitness
 
 
@@ -89,30 +91,16 @@ def crossover(offspring):
     cross_offsprings = []
 
     for i in range(0, P, 2):
-        off1 = Individual()
-        off2 = Individual()
-
-        # 2 heads and 2 tails
-        head1 = []
-        tail1 = []
-        head2 = []
-        tail2 = []
-
         cross_point = random.randint(1, N - 1)
 
-        for j in range(0, cross_point):  # head from 0 to crosspoint
-            head1.append(offspring[i].gene[j])
-            head2.append(offspring[i + 1].gene[j])
+        off1 = offspring[i]
+        off2 = offspring[i + 1]
 
-        for j in range(cross_point, N):  # tail from crosspoint to N
-            tail1.append(offspring[i].gene[j])
-            tail2.append(offspring[i + 1].gene[j])
+        off1.gene[cross_point:], off2.gene[cross_point:] = off2.gene[cross_point:], off1.gene[cross_point:]
 
-        off1.gene = head1 + tail2  # 1st gene be released after crossover
         off1.fitness = minimisation(off1)  # 1st gene be counted fitness
         cross_offsprings.append(off1)  # 1st gene be added to new population after crossover
 
-        off2.gene = head2 + tail1  # 2nd gene be released after crossover
         off2.fitness = minimisation(off2)  # 2nd gene be counted fitness
         cross_offsprings.append(off2)  # 2nd gene be added to new population after crossover
 
@@ -121,7 +109,7 @@ def crossover(offspring):
 
 
 
-print(crossover(RWS(init_population())))
+# print(crossover(RWS(init_population())))
 
 
 # bit-wise mutation
@@ -134,15 +122,15 @@ def mutation(cross_offsprings, MUTRATE, MUTSTEP):
         for j in range(0, N):
             gene = cross_offsprings[i].gene[j]
             ALTER = random.uniform(0.0, MUTSTEP)
-            MUTPROB = random.randint(0.0, 100.0)
+            MUTPROB = random.uniform(0.0, 100.0)
             if MUTPROB < (100 * MUTRATE):
-                if random.randint(0, 1) == 1:  # if random num is 1, add ALTER
+                if random.random() % 2:  # if random num is 1, add ALTER
                     gene += ALTER
                 else:            # if random num is 0, minus ALTER
                     gene -= ALTER
-                if gene > 100:   # if gene value is larger than 100, reset it to 100
+                if gene > 100:   # if gene value is larger than pi, reset set to pi
                     gene = 100
-                if gene < -100:   # if gene value is smaller than -100, reset it to -100
+                if gene < -100:   # if gene value is smaller than 0, reset it to 0
                     gene = -100
 
             new_ind.gene.append(gene)  # add gene to new individual
@@ -244,13 +232,8 @@ meanFit_data3 = []
 meanFit_data4 = []
 
 
-# =============================================================
-# TOURANMENT vs ROULETTE WHEEL SELECTION COMPARISON
-# =============================================================
+# Compare TNS & RWS-----------------------------[1]
 
-# [----------------- UNCOMMENT THIS AND ALTER N TO TEST -----------------]
-# N = 20
-# GENERATIONS = 150
 # plt.title("Minimisation GA \n Touranment and Roulette Wheel Selection \n"
 #           + "N = " + str(N) + " MUTRATE = " + str(MUTRATE) + " MUTSTEP = " + str(MUTSTEP))
 #
@@ -264,19 +247,10 @@ meanFit_data4 = []
 # plt.plot(minFit_data2, label="Roulette Wheel")
 
 
-# =============================================================
-# TOURANMENT SELECTION
-# =============================================================
+# Best Fitness and Mean Fitness of TNS---------------[2]
 
-
-# Best Fitness and Mean Fitness of TS
-# [----------------- UNCOMMENT THIS TO TEST -----------------]
-
-GENERATIONS = 150
 plt.title("Minimisation GA - Touranment Selection \n"
             + "N = " + str(N) + " MUTRATE = " + str(MUTRATE) + " MUTSTEP = " + str(MUTSTEP))
-
-# initialise original population
 population = init_population()
 
 minFit_data1, meanFit_data1 = genetic_algorithm(population, TNS, 0.03, 1.0)
@@ -285,8 +259,7 @@ plt.plot(minFit_data1, label="Min Fitness")
 plt.plot(meanFit_data1, label="Mean Fitness")
 
 
-# Vary MUTRATE
-# [----------------- UNCOMMENT THIS TO TEST -----------------]
+# Vary MUTRATE of TNS -----------------------------[3]
 # plt.title("Minimisation GA - Touranment Selection \n"
 #             + "Vary MUTRATE")
 # population = init_population()
@@ -302,13 +275,8 @@ plt.plot(meanFit_data1, label="Mean Fitness")
 # plt.plot(minFit_data4, label="MUTRATE 0.0003")
 
 
-# =============================================================
-# ROULETTE WHEEL SELECTION
-# =============================================================
+# Best Fitness and Mean Fitness of RWS----------------------[4]
 
-
-# Best Fitness and Mean Fitness of RW
-# [----------------- UNCOMMENT THIS TO TEST -----------------]
 # plt.title("Minimisation GA - Roulette Wheel Selection \n"
 #             + "N = " + str(N) + " MUTRATE = " + str(MUTRATE) + " MUTSTEP = " + str(MUTSTEP))
 #
@@ -321,8 +289,7 @@ plt.plot(meanFit_data1, label="Mean Fitness")
 # plt.plot(meanFit_data1, label="Mean Fitness")
 
 
-# Vary MUTRATE
-# [----------------- UNCOMMENT THIS TO TEST -----------------]
+# Vary MUTRATE of RWS-------------------------------------[5]
 # plt.title("Minimisation GA - Roulette Wheel Selection \n"
 #             + "Vary MUTRATE")
 # population = init_population()
