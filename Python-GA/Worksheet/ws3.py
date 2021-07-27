@@ -12,10 +12,11 @@ class Individual:
         return "Gene string " + "".join(str(i) for i in self.gene) + " - fitness: " + str(self.fitness) + "\n"
 
 
-P = 50
+P = 300
 N = 10
 MUTRATE = 0.03
 MUTSTEP = 1.0
+GENERATIONS = 250
 
 
 def minimisation(individual):
@@ -38,7 +39,7 @@ def init_population():
         new_ind.gene = temp_gene.copy()  # copy the gene from temp_gene and assign to gene of individual
         new_ind.fitness = minimisation(new_ind)  # initialise instance's fitness
 
-        print(temp_gene, " -> ", new_ind.fitness)
+        # print(temp_gene, " -> ", new_ind.fitness)
         population.append(new_ind)
 
     return population
@@ -103,7 +104,7 @@ def crossover(offspring):
 
     return cross_offsprings
 
-print(crossover(TNS(init_population())))
+# print(crossover(TNS(init_population())))
 
 
 # bit-wise mutation
@@ -227,32 +228,32 @@ meanFit_data4 = []
 
 # N = 10
 # GENERATIONS = 150
-# plt.title("Minimisation GA \n Touranment and Roulette Wheel Selection \n"
-#           + "N = " + str(N) + " MUTRATE = " + str(MUTRATE) + " MUTSTEP = " + str(MUTSTEP))
-#
-# # initialise original population
-# population = init_population()
-#
-# minFit_data1, meanFit_data1 = genetic_algorithm(population, TNS, 0.03, 1.0)
-# minFit_data2, meanFit_data2 = genetic_algorithm(population, RWS, 0.03, 1.0)
-#
-# plt.plot(minFit_data1, label="Touranment")
-# plt.plot(minFit_data2, label="Roulette Wheel")
-
-
-# Best Fitness and Mean Fitness of TS
-
-GENERATIONS = 150
-plt.title("Minimisation GA - Touranment Selection \n"
-            + "N = " + str(N) + " MUTRATE = " + str(MUTRATE) + " MUTSTEP = " + str(MUTSTEP))
+plt.title("Minimisation GA \n Touranment and Roulette Wheel Selection \n"
+          + "N = " + str(N) + " MUTRATE = " + str(MUTRATE) + " MUTSTEP = " + str(MUTSTEP))
 
 # initialise original population
 population = init_population()
 
 minFit_data1, meanFit_data1 = genetic_algorithm(population, TNS, 0.03, 1.0)
+minFit_data2, meanFit_data2 = genetic_algorithm(population, RWS, 0.03, 1.0)
 
-plt.plot(minFit_data1, label="Min Fitness")
-plt.plot(meanFit_data1, label="Mean Fitness")
+plt.plot(minFit_data1, label="Touranment")
+plt.plot(minFit_data2, label="Roulette Wheel")
+
+
+# Best Fitness and Mean Fitness of TS
+
+
+# plt.title("Minimisation GA - Touranment Selection \n"
+#             + "N = " + str(N) + " MUTRATE = " + str(MUTRATE) + " MUTSTEP = " + str(MUTSTEP))
+#
+# # initialise original population
+# population = init_population()
+#
+# minFit_data1, meanFit_data1 = genetic_algorithm(population, TNS, MUTRATE, MUTSTEP)
+#
+# plt.plot(minFit_data1, label="Min Fitness")
+# plt.plot(meanFit_data1, label="Mean Fitness")
 
 
 # Vary MUTRATE

@@ -11,11 +11,11 @@ class Individual:
     def __repr__(self):
         return "Gene string " + "".join(str(i) for i in self.gene) + " - fitness: " + str(self.fitness) + "\n"
 
-P = 20000
-N = 20
-MUTRATE = 0.03
-MUTSTEP = 1.0
-GENERATIONS = 150
+P = 5000
+N = 10
+MUTRATE = 0.3
+MUTSTEP = 0.9
+GENERATIONS = 500
 
 def minimisation(individual):
     fitness = 0
@@ -35,13 +35,13 @@ def init_population():
     for i in range(0, P):
         temp_gene = []
         for i in range(0, N):
-            temp_gene.append(random.randint(-100, 100))  # a random gene between -100, 100
+            temp_gene.append(random.uniform(-100.0, 100.0))  # a random gene between -100, 100
 
         new_ind = Individual()  # initialise new instance
         new_ind.gene = temp_gene.copy()  # copy the gene from temp_gene and assign to gene of individual
         new_ind.fitness = minimisation(new_ind)  # initialise instance's fitness
 
-        print(temp_gene, " -> ", new_ind.fitness)
+        # print(temp_gene, " -> ", new_ind.fitness)
         population.append(new_ind)
 
     return population
@@ -106,9 +106,6 @@ def crossover(offspring):
 
     return cross_offsprings
 
-
-
-
 # print(crossover(RWS(init_population())))
 
 
@@ -121,17 +118,18 @@ def mutation(cross_offsprings, MUTRATE, MUTSTEP):
         new_ind.gene = []
         for j in range(0, N):
             gene = cross_offsprings[i].gene[j]
-            ALTER = random.uniform(0.0, MUTSTEP)
+
             MUTPROB = random.uniform(0.0, 100.0)
-            if MUTPROB < (100 * MUTRATE):
-                if random.random() % 2:  # if random num is 1, add ALTER
+            if MUTPROB < (MUTRATE):
+                ALTER = random.uniform(0.0, MUTSTEP)
+                if random.randint(0, 100) < 50:  # if random num is 1, add ALTER
                     gene += ALTER
                 else:            # if random num is 0, minus ALTER
                     gene -= ALTER
-                if gene > 100:   # if gene value is larger than pi, reset set to pi
-                    gene = 100
-                if gene < -100:   # if gene value is smaller than 0, reset it to 0
-                    gene = -100
+            if gene > 100:   # if gene value is larger than pi, reset set to pi
+                gene = 100
+            if gene < -100:   # if gene value is smaller than 0, reset it to 0
+                gene = -100
 
             new_ind.gene.append(gene)  # add gene to new individual
         new_ind.fitness = minimisation(new_ind)  # count its fitness
@@ -240,70 +238,133 @@ meanFit_data4 = []
 # # initialise original population
 # population = init_population()
 #
-# minFit_data1, meanFit_data1 = genetic_algorithm(population, TNS, 0.03, 1.0)
-# minFit_data2, meanFit_data2 = genetic_algorithm(population, RWS, 0.03, 1.0)
+# minFit_data1, meanFit_data1 = genetic_algorithm(population, TNS, MUTRATE, MUTSTEP)
+# minFit_data2, meanFit_data2 = genetic_algorithm(population, RWS, MUTRATE, MUTSTEP)
 #
-# plt.plot(minFit_data1, label="Touranment")
+# plt.plot(minFit_data1, label="Tournament")
 # plt.plot(minFit_data2, label="Roulette Wheel")
 
+#test-/ok/
+# P = 5000
+# N = 10
+# MUTRATE = 0.3
+# MUTSTEP = 0.9
+# GENERATIONS = 500
+# Min Fitness: 0.5054779077535237
+# Mean Fitness: 3.6535281336775123
+# Min Fitness: 6.343367994319884
+# Mean Fitness: 7.659454092537506
 
 # Best Fitness and Mean Fitness of TNS---------------[2]
 
-plt.title("Minimisation GA - Touranment Selection \n"
-            + "N = " + str(N) + " MUTRATE = " + str(MUTRATE) + " MUTSTEP = " + str(MUTSTEP))
-population = init_population()
+# plt.title("Minimisation GA - Touranment Selection \n"
+#             + "N = " + str(N) + " MUTRATE = " + str(MUTRATE) + " MUTSTEP = " + str(MUTSTEP))
+# population = init_population()
+#
+# minFit_data1, meanFit_data1 = genetic_algorithm(population, TNS, MUTRATE, MUTSTEP)
+#
+# plt.plot(minFit_data1, label="Min Fitness")
+# plt.plot(meanFit_data1, label="Mean Fitness")
 
-minFit_data1, meanFit_data1 = genetic_algorithm(population, TNS, 0.03, 1.0)
-
-plt.plot(minFit_data1, label="Min Fitness")
-plt.plot(meanFit_data1, label="Mean Fitness")
-
+#test-/ok/
+# P = 5000
+# N = 10
+# MUTRATE = 0.3
+# MUTSTEP = 0.9
+# GENERATIONS = 500
+# Min Fitness: 0.9791907504021441
+# Mean Fitness: 4.006859488232009
 
 # Vary MUTRATE of TNS -----------------------------[3]
 # plt.title("Minimisation GA - Touranment Selection \n"
 #             + "Vary MUTRATE")
 # population = init_population()
 #
-# minFit_data1, meanFit_data1 = genetic_algorithm(population, TNS, 0.3, 1.0)
-# minFit_data2, meanFit_data2 = genetic_algorithm(population, TNS, 0.03, 1.0)
-# minFit_data3, meanFit_data3 = genetic_algorithm(population, TNS, 0.003, 1.0)
-# minFit_data4, meanFit_data4 = genetic_algorithm(population, TNS, 0.0003, 1.0)
+# minFit_data1, meanFit_data1 = genetic_algorithm(population, TNS, 0.3, MUTSTEP)
+# minFit_data2, meanFit_data2 = genetic_algorithm(population, TNS, 0.03, MUTSTEP)
+# minFit_data3, meanFit_data3 = genetic_algorithm(population, TNS, 0.003, MUTSTEP)
+# minFit_data4, meanFit_data4 = genetic_algorithm(population, TNS, 0.0003, MUTSTEP)
 #
 # plt.plot(minFit_data1, label="MUTRATE 0.3")
 # plt.plot(minFit_data2, label="MUTRATE 0.03")
 # plt.plot(minFit_data3, label="MUTRATE 0.003")
 # plt.plot(minFit_data4, label="MUTRATE 0.0003")
 
+#test-/ok/
+# P = 50
+# N = 10
+# MUTRATE = 0.3
+# MUTSTEP = 0.9
+# GENERATIONS = 100
+#
+# Min Fitness: 99684281.9121107
+# Mean Fitness: 101351012.17040497
+#
+# Min Fitness: 423728695.1664391
+# Mean Fitness: 423728695.1664391
+#
+# Min Fitness: 274888852.56087416
+# Mean Fitness: 274888852.56087434
+#
+# Min Fitness: 534119413.39533925
+# Mean Fitness: 534119413.39533967
+
 
 # Best Fitness and Mean Fitness of RWS----------------------[4]
 
-# plt.title("Minimisation GA - Roulette Wheel Selection \n"
-#             + "N = " + str(N) + " MUTRATE = " + str(MUTRATE) + " MUTSTEP = " + str(MUTSTEP))
-#
-# # initialise original population
-# population = init_population()
-#
-# minFit_data1, meanFit_data1 = genetic_algorithm(population, RWS, 0.03, 1.0)
-#
-# plt.plot(minFit_data1, label="Min Fitness")
-# plt.plot(meanFit_data1, label="Mean Fitness")
+plt.title("Minimisation GA - Roulette Wheel Selection \n"
+            + "N = " + str(N) + " MUTRATE = " + str(MUTRATE) + " MUTSTEP = " + str(MUTSTEP))
 
+# initialise original population
+population = init_population()
+
+minFit_data1, meanFit_data1 = genetic_algorithm(population, RWS, MUTRATE, MUTSTEP)
+
+plt.plot(minFit_data1, label="Min Fitness")
+plt.plot(meanFit_data1, label="Mean Fitness")
+
+#test-/???/
+# P = 5000
+# N = 10
+# MUTRATE = 0.3
+# MUTSTEP = 0.9
+# GENERATIONS = 500
+# Min Fitness: 213.80452061591197
+# Mean Fitness: 233.26140452568404
 
 # Vary MUTRATE of RWS-------------------------------------[5]
 # plt.title("Minimisation GA - Roulette Wheel Selection \n"
 #             + "Vary MUTRATE")
 # population = init_population()
 #
-# minFit_data1, meanFit_data1 = genetic_algorithm(population, RWS, 0.3, 1.0)
-# minFit_data2, meanFit_data2 = genetic_algorithm(population, RWS, 0.03, 1.0)
-# minFit_data3, meanFit_data3 = genetic_algorithm(population, RWS, 0.003, 1.0)
-# minFit_data4, meanFit_data4 = genetic_algorithm(population, RWS, 0.0003, 1.0)
+# minFit_data1, meanFit_data1 = genetic_algorithm(population, RWS, 0.3, MUTSTEP)
+# minFit_data2, meanFit_data2 = genetic_algorithm(population, RWS, 0.03, MUTSTEP)
+# minFit_data3, meanFit_data3 = genetic_algorithm(population, RWS, 0.003, MUTSTEP)
+# minFit_data4, meanFit_data4 = genetic_algorithm(population, RWS, 0.0003, MUTSTEP)
 #
 # plt.plot(minFit_data1, label="MUTRATE 0.3")
 # plt.plot(minFit_data2, label="MUTRATE 0.03")
 # plt.plot(minFit_data3, label="MUTRATE 0.003")
 # plt.plot(minFit_data4, label="MUTRATE 0.0003")
 
+#test-/ok/
+# P = 50
+# N = 10
+# MUTRATE = 0.3
+# MUTSTEP = 0.9
+# GENERATIONS = 100
+
+# Min Fitness: 139657598.7728544
+# Mean Fitness: 143505973.93029332
+#
+# Min Fitness: 402117350.23294544
+# Mean Fitness: 402187712.4785755
+#
+# Min Fitness: 263020568.9196346
+# Mean Fitness: 263020568.91963443
+#
+# Min Fitness: 450578624.4577755
+# Mean Fitness: 450578624.4577752
 
 # DISPLAY PLOT
 plt.legend(loc="upper right")
