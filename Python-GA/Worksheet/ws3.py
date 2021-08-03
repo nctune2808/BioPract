@@ -429,6 +429,7 @@ plt.plot(minFitness_data2, label="Roulette Wheel")
 # MUTSTEP = 1.0
 # GENERATIONS = 100
 
+# comp10
 # Min Fitness: 0.43622644300060287
 # Mean Fitness: 3.8197628268323847
 #
@@ -441,7 +442,7 @@ plt.plot(minFitness_data2, label="Roulette Wheel")
 # MUTRATE = 0.03
 # MUTSTEP = 1.0
 # GENERATIONS = 250
-#
+#comp20
 # Min Fitness: 0.6581927861139256
 # Mean Fitness: 9.394424795143884
 #
@@ -463,6 +464,7 @@ plt.plot(minFitness_data2, label="Roulette Wheel")
 # MUTSTEP = 1.0
 # GENERATIONS = 300
 
+# TNS
 # Min Fitness: 0.007116915075881636
 # Mean Fitness: 1.7091844175237383
 
@@ -488,6 +490,7 @@ plt.plot(minFitness_data2, label="Roulette Wheel")
 # MUTSTEP = 1.0
 # GENERATIONS = 300
 
+# TNS mutrates
 # Min Fitness: 8.567393372281515
 # Mean Fitness: 75.87173240801299
 #
@@ -515,6 +518,7 @@ plt.plot(minFitness_data2, label="Roulette Wheel")
 # MUTSTEP = 1.0
 # GENERATIONS = 300
 
+# RWS
 # Min Fitness: 0.02678613179945266
 # Mean Fitness: 1.9721901844231733
 
@@ -541,6 +545,7 @@ plt.plot(minFitness_data2, label="Roulette Wheel")
 # MUTSTEP = 1.0
 # GENERATIONS = 300
 
+# RWS mutrates
 # Min Fitness: 8.567393372281515
 # Mean Fitness: 75.87173240801299
 #
