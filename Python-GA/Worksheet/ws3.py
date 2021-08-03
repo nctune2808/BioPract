@@ -23,10 +23,9 @@ GENERATIONS = 250
 # def maximisation(individual):
 #     fitness = 0
 #     for i in range(0, N):
-#         # if individual.gene[i] == 1:  # if gene at index i equals to 1
+#         # if individual.gene[i] == 1:
 #         fitness = fitness + individual.gene[i]
 #     return fitness
-#
 #
 # # calculate population's fitness
 # def total_fitness(population):
@@ -37,11 +36,11 @@ GENERATIONS = 250
 
 
 def minimisation(individual):
-    fitness = 10 * N  # 10.N + x^2 - 10.cos(2.pi.x)
+    fitness = 10 * N
     for i in range(0, N):
-        squared = math.pow(individual.gene[i], 2)  # x^2
-        cosin = 10 * math.cos(individual.gene[i] * (2 * math.pi))  # 10.cos(2.pi.x)
-        fitness += squared - cosin  # x^2 - 10.cos(2.pi.x)
+        squared = math.pow(individual.gene[i], 2)
+        cos = 10 * math.cos(individual.gene[i] * (2 * math.pi))
+        fitness += squared - cos
     return fitness
 
 
@@ -50,32 +49,29 @@ def init_population():
     for i in range(0, P):
         temp_gene = []
         for i in range(0, N):
-            temp_gene.append(random.uniform(-5.12, 5.12))   # a random gene between -5.12, 5.12
-            # temp_gene.append(random.uniform(0.0, 1.0))  # a random gene between 0.0, 1.0
-        new_ind = Individual()  # initialise new instance
-        new_ind.gene = temp_gene.copy()  # copy the gene from temp_gene and assign to gene of individual
-        new_ind.fitness = minimisation(new_ind)  # initialise instance's fitness
-
+            temp_gene.append(random.uniform(-5.12, 5.12))  # random gene between -5.12, 5.12
+            # temp_gene.append(random.uniform(0.0, 1.0))    # random gene between 0.0, 1.0
+        new_ind = Individual()
+        new_ind.gene = temp_gene.copy()  # copy the gene from temp_gene and assign to gene of new individual
+        new_ind.fitness = minimisation(new_ind)
         # print(temp_gene, " -> ", new_ind.fitness)
         population.append(new_ind)
 
     return population
 
 
-# tournament selection
+# TNS
 # def TNS_max(population):
 #     offspring = []
-#     # Select two parents and recombine pairs of parents
 #     for i in range(0, P):
 #         parent1 = random.randint(0, P - 1)
 #         off1 = population[parent1]
 #         parent2 = random.randint(0, P - 1)
 #         off2 = population[parent2]
-#         if off1.fitness > off2.fitness:  # if one's fitness higher then add to temp offspring
+#         if off1.fitness > off2.fitness:  # add to temp offspring
 #             offspring.append(off1)
 #         else:
 #             offspring.append(off2)
-#
 #     return offspring
 
 
@@ -83,22 +79,22 @@ def TNS_min(population):
     offsprings = []
     for i in range(0, P):
         parent1 = random.randint(0, P - 1)
-        off1 = population[parent1]
         parent2 = random.randint(0, P - 1)
+
+        off1 = population[parent1]
         off2 = population[parent2]
-        if off1.fitness > off2.fitness:  # if one's fitness higher then add to temp offsprings
+
+        if off1.fitness > off2.fitness:  # add to temp offsprings
             offsprings.append(off2)
         else:
             offsprings.append(off1)
     return offsprings
 
 
-# roulette wheel selection
-
+# RWS
 # def RWS_max(population):
 #     initial_fits = total_fitness(population)
 #     offspring = copy.deepcopy(population)
-#
 #     for i in range(0, P):
 #         selection_point = random.uniform(0.0, initial_fits)
 #         running_total = 0
@@ -106,21 +102,16 @@ def TNS_min(population):
 #         while running_total <= selection_point:
 #             running_total += population[j].fitness
 #             j += 1
-#             if (j == P):
-#                 break
+#             if j == P: break
 #         offspring[i] = population[j - 1]
 #     return offspring
 
 
 def RWS_min(population):
-    # total fitness of initial pop
     total = 0
     for individual in population:
         total += 1 / individual.fitness
-
     offspring = []
-    # Roulette Wheel Selection Process
-    # Select two parents and recombine pairs of parents
     for i in range(0, P):
         selection_point = random.uniform(0.0, total)
         running_total = 0
@@ -128,17 +119,14 @@ def RWS_min(population):
         while running_total <= selection_point:
             running_total += 1 / population[j].fitness
             j += 1
-            if(j == P):
-                break
-        offspring.append(copy.deepcopy(population[j-1]))
-
+            if j == P: break
+        offspring.append(copy.deepcopy(population[j - 1]))
     return offspring
 
 
 # one point crossover
 def crossover(offspring):
     cross_offsprings = []
-
     for i in range(0, P, 2):
         off1 = Individual()
         off2 = Individual()
@@ -151,11 +139,10 @@ def crossover(offspring):
 
         cross_point = random.randint(1, N - 1)
 
-        for j in range(0, cross_point):  # head from 0 to crosspoint
+        for j in range(0, cross_point):  # head from 0 to cross_point
             head1.append(offspring[i].gene[j])
             head2.append(offspring[i + 1].gene[j])
-
-        for j in range(cross_point, N):  # tail from crosspoint to N
+        for j in range(cross_point, N):  # tail from cross_point to N
             tail1.append(offspring[i].gene[j])
             tail2.append(offspring[i + 1].gene[j])
 
@@ -166,7 +153,6 @@ def crossover(offspring):
         off2.gene = head2 + tail1  # 2nd gene be released after crossover
         off2.fitness = minimisation(off2)  # 2nd gene be counted fitness
         cross_offsprings.append(off2)  # 2nd gene be added to new population after crossover
-
     return cross_offsprings
 
 
@@ -176,43 +162,36 @@ def crossover(offspring):
 # bit-wise mutation
 def mutation(cross_offsprings, MUTRATE, MUTSTEP):
     mut_offsprings = []
-
     for i in range(0, P):
         new_ind = Individual();
         new_ind.gene = []
         for j in range(0, N):
             gene = cross_offsprings[i].gene[j]
-
             MUTPROB = random.uniform(0.0, 100.0)
             if MUTPROB < (100 * MUTRATE):
                 ALTER = random.uniform(0.0, MUTSTEP)
-                # if random.random() % 2:  # if random num is 1, add ALTER
                 if random.randint(0, 1) == 1:
                     gene += ALTER
-                else:  # if random num is 0, minus ALTER
+                else:
                     gene -= ALTER
             if gene > 5.12:  # if gene value is larger than 1.0, reset it to 1.0
                 gene = 5.12
             if gene < -5.12:  # if gene value is smaller than 0.0, reset it to 0.0
                 gene = -5.12
-
             new_ind.gene.append(gene)  # add gene to new individual
         new_ind.fitness = minimisation(new_ind)  # count its fitness
         mut_offsprings.append(new_ind)  # add new release to new population after mutation
-
     return mut_offsprings
 
 
-# descending sorting
 def sorting(population):
-    #  descending sorting based on  individual's fitness
     population.sort(key=lambda individual: individual.fitness, reverse=True)
     return population
 
 
 # optimisation
 def optimising(population, new_population):
-    # sorting instance with descending fitness
+    # sorting descending fitness
     population = sorting(population)
 
     # # take two instances with the worst fitness in the old population at index -1 and index -2
@@ -224,18 +203,17 @@ def optimising(population, new_population):
     # overwrite the old population with mutate_offspring
     population = copy.deepcopy(new_population)
 
-    # sorting instance with descending fitness
+    # sorting descending fitness again
     population = sorting(population)
 
-    # after deepcopy new pop to old pop
+    # after deepcopy new pop to old one
     # take the two instance with the best fitness in the new population at index 0 and index 1
     bestFit_new_1 = population[0]
     bestFit_new_2 = population[1]
     # worstFit_new_1 = population[-1]
     # worstFit_new_2 = population[-2]
 
-    # compare the fitness btw the ones in the old pop and the ones in the new pop
-    # replace the two worst fitness/gene by the two best fitness/gene at specific index in the new population
+    # compare the fitness
     if bestFit_new_1.fitness > worstFit_old_1.fitness:
         population[0].fitness = worstFit_old_1.fitness
         population[0].gene = worstFit_old_1.gene
@@ -248,15 +226,14 @@ def optimising(population, new_population):
     # if bestFit_old_2.fitness > worstFit_new_2.fitness:
     #     population[-2].fitness = bestFit_old_2.fitness
     #     population[-2].gene = bestFit_old_2.gene
-
     return population
 
 
 def genetic_algorithm(population, selection, MUTRATE, MUTSTEP):
     # storing data to plot
-    meanFit_values = []
-    # maxFit_values = []
-    minFit_values = []
+    meanFitness_values = []
+    # maxFitness_values = []
+    minFitness_values = []
 
     for gen in range(0, GENERATIONS):
         # TNS / RWS process
@@ -270,62 +247,46 @@ def genetic_algorithm(population, selection, MUTRATE, MUTSTEP):
 
         # calculate Min and Mean Fitness
         # storing fitness in a list
-        Fit = []
+        Fitness = []
         for ind in population:
-            Fit.append(minimisation(ind))
-        # print(Fit)
+            Fitness.append(minimisation(ind))
 
-        # maxFit = max(Fit)
-        minFit = min(Fit)  # take out the min fitness among fitness in Fit
-        meanFit = sum(Fit) / P  # sum all the fitness and divide by Population size
+        # maxFitness = max(Fitness)
+        minFitness = min(Fitness)  # min fitness among Fitness Array
+        meanFitness = sum(Fitness) / P  # sum all the fitness and divide by Population size
 
-        # append maxFit and meanFit respectively to MaxFit_values and MeanFit_values
-        # maxFit_values.append(maxFit)
-        minFit_values.append(minFit)
-        meanFit_values.append(meanFit)
-
-        # display
-        # print("GENERATION " + str(gen + 1))
-    # print("Max Fitness: " + str(maxFit) + "\n")
-    print("Min Fitness: " + str(minFit) + "\n")
-    print("Mean Fitness: " + str(meanFit) + "\n")
-
-    return minFit_values, meanFit_values
-    # return maxFit_values, meanFit_values
+        # maxFitness_values.append(maxFitness)
+        minFitness_values.append(minFitness)
+        meanFitness_values.append(meanFitness)
 
 
-# plotting
+    # print("Max Fitness: " + str(maxFitness) + "\n")
+    print("Min Fitness: " + str(minFitness))
+    print("Mean Fitness: " + str(meanFitness) + "\n")
+
+    return minFitness_values, meanFitness_values
+    # return maxFitness_values, meanFitness_values
+
+
 plt.ylabel("Fitness")
 plt.xlabel("Number of Generation")
 
 #  Storing
-minFit_data1 = []
-minFit_data2 = []
-minFit_data3 = []
-minFit_data4 = []
-# maxFit_data1 = []
-# maxFit_data2 = []
-# maxFit_data3 = []
-# maxFit_data4 = []
-
-meanFit_data1 = []
-meanFit_data2 = []
-meanFit_data3 = []
-meanFit_data4 = []
+minFitness_data1, minFitness_data2, minFitness_data3, minFitness_data4 = []
+# maxFitness_data1, maxFitness_data2, maxFitness_data3, maxFitness_data4 = []
+meanFitness_data1, meanFitness_data2, meanFitness_data3, meanFitness_data4 = []
 
 # ====================MAX======================
 # # TNS vs RWS
 # plt.title("Maximisation GA \n Tournament and Roulette Wheel Selection \n"
 #           + "N = " + str(N) + " Mutrate = " + str(MUTRATE) + " Mutstep = " + str(MUTSTEP))
-#
-# # initialise original population
 # population = init_population()
 #
-# maxFit_data1, meanFit_data1 = genetic_algorithm(population, TNS_max, MUTRATE, MUTSTEP)
-# maxFit_data2, meanFit_data2 = genetic_algorithm(population, RWS_max, MUTRATE, MUTSTEP)
+# maxFitness_data1, meanFitness_data1 = genetic_algorithm(population, TNS_max, MUTRATE, MUTSTEP)
+# maxFitness_data2, meanFitness_data2 = genetic_algorithm(population, RWS_max, MUTRATE, MUTSTEP)
 #
-# plt.plot(maxFit_data1, label="Tournament")
-# plt.plot(maxFit_data2, label="Roulette Wheel")
+# plt.plot(maxFitness_data1, label="Tournament")
+# plt.plot(maxFitness_data2, label="Roulette Wheel")
 #
 # # Test/ok/
 # # P = 50
@@ -345,9 +306,9 @@ meanFit_data4 = []
 # # plt.title("Maximisation GA - Tournament Selection \n"
 # #             + "N = " + str(N) + " Mutrate = " + str(MUTRATE) + " Mutstep = " + str(MUTSTEP))
 # # population = init_population()
-# # maxFit_data1, meanFit_data1 = genetic_algorithm(population, TNS_max, MUTRATE, MUTSTEP)
-# # plt.plot(maxFit_data1, label="Best Fitness")
-# # plt.plot(meanFit_data1, label="Mean Fitness")
+# # maxFitness_data1, meanFitness_data1 = genetic_algorithm(population, TNS_max, MUTRATE, MUTSTEP)
+# # plt.plot(maxFitness_data1, label="Best Fitness")
+# # plt.plot(meanFitness_data1, label="Mean Fitness")
 #
 # # Test/ok/
 # # P = 50
@@ -364,15 +325,15 @@ meanFit_data4 = []
 # #             + "Different Mutrates")
 # # population = init_population()
 # #
-# # maxFit_data1, meanFit_data1 = genetic_algorithm(population, TNS_max, 0.3, 1.0)
-# # maxFit_data2, meanFit_data2 = genetic_algorithm(population, TNS_max, 0.03, 1.0)
-# # maxFit_data3, meanFit_data3 = genetic_algorithm(population, TNS_max, 0.003, 1.0)
-# # maxFit_data4, meanFit_data4 = genetic_algorithm(population, TNS_max, 0.0003, 1.0)
+# # maxFitness_data1, meanFitness_data1 = genetic_algorithm(population, TNS_max, 0.3, 1.0)
+# # maxFitness_data2, meanFitness_data2 = genetic_algorithm(population, TNS_max, 0.03, 1.0)
+# # maxFitness_data3, meanFitness_data3 = genetic_algorithm(population, TNS_max, 0.003, 1.0)
+# # maxFitness_data4, meanFitness_data4 = genetic_algorithm(population, TNS_max, 0.0003, 1.0)
 # #
-# # plt.plot(maxFit_data1, label="Mutrate 0.3")
-# # plt.plot(maxFit_data2, label="Mutrate 0.03")
-# # plt.plot(maxFit_data3, label="Mutrate 0.003")
-# # plt.plot(maxFit_data4, label="Mutrate 0.0003")
+# # plt.plot(maxFitness_data1, label="Mutrate 0.3")
+# # plt.plot(maxFitness_data2, label="Mutrate 0.03")
+# # plt.plot(maxFitness_data3, label="Mutrate 0.003")
+# # plt.plot(maxFitness_data4, label="Mutrate 0.0003")
 #
 # # Test/ok/
 # # P = 50
@@ -396,12 +357,10 @@ meanFit_data4 = []
 # #RWS
 # # plt.title("Maximisation GA - Roulette Wheel Selection \n"
 # #             + "N = " + str(N) + " Mutrate = " + str(MUTRATE) + " Mutstep = " + str(MUTSTEP))
-# #
-# # # initialise original population
 # # population = init_population()
-# # maxFit_data1, meanFit_data1 = genetic_algorithm(population, RWS_max, MUTRATE, MUTSTEP)
-# # plt.plot(maxFit_data1, label="Best Fitness")
-# # plt.plot(meanFit_data1, label="Mean Fitness")
+# # maxFitness_data1, meanFitness_data1 = genetic_algorithm(population, RWS_max, MUTRATE, MUTSTEP)
+# # plt.plot(maxFitness_data1, label="Best Fitness")
+# # plt.plot(meanFitness_data1, label="Mean Fitness")
 #
 # # Test/ok/
 # # P = 50
@@ -419,15 +378,15 @@ meanFit_data4 = []
 # #             + "Different Mutrates")
 # # population = init_population()
 # #
-# # maxFit_data1, meanFit_data1 = genetic_algorithm(population, RWS_max, 0.3, 1.0)
-# # maxFit_data2, meanFit_data2 = genetic_algorithm(population, RWS_max, 0.03, 1.0)
-# # maxFit_data3, meanFit_data3 = genetic_algorithm(population, RWS_max, 0.003, 1.0)
-# # maxFit_data4, meanFit_data4 = genetic_algorithm(population, RWS_max, 0.0003, 1.0)
+# # maxFitness_data1, meanFitness_data1 = genetic_algorithm(population, RWS_max, 0.3, 1.0)
+# # maxFitness_data2, meanFitness_data2 = genetic_algorithm(population, RWS_max, 0.03, 1.0)
+# # maxFitness_data3, meanFitness_data3 = genetic_algorithm(population, RWS_max, 0.003, 1.0)
+# # maxFitness_data4, meanFitness_data4 = genetic_algorithm(population, RWS_max, 0.0003, 1.0)
 # #
-# # plt.plot(maxFit_data1, label="Mutrate 0.3")
-# # plt.plot(maxFit_data2, label="Mutrate 0.03")
-# # plt.plot(maxFit_data3, label="Mutrate 0.003")
-# # plt.plot(maxFit_data4, label="Mutrate 0.0003")
+# # plt.plot(maxFitness_data1, label="Mutrate 0.3")
+# # plt.plot(maxFitness_data2, label="Mutrate 0.03")
+# # plt.plot(maxFitness_data3, label="Mutrate 0.003")
+# # plt.plot(maxFitness_data4, label="Mutrate 0.0003")
 #
 # # Test/ok/
 # # P = 50
@@ -449,8 +408,6 @@ meanFit_data4 = []
 # # Mean Fitness: 37.82836279483741
 
 
-
-
 # ================ MIN ==============
 
 # TNS vs RWS
@@ -460,12 +417,11 @@ plt.title("Minimisation GA \n Tournament and Roulette Wheel Selection \n"
 # initialise original population
 population = init_population()
 
-minFit_data1, meanFit_data1 = genetic_algorithm(population, TNS_min, MUTRATE, MUTSTEP)
-minFit_data2, meanFit_data2 = genetic_algorithm(population, RWS_min, MUTRATE, MUTSTEP)
+minFitness_data1, meanFitness_data1 = genetic_algorithm(population, TNS_min, MUTRATE, MUTSTEP)
+minFitness_data2, meanFitness_data2 = genetic_algorithm(population, RWS_min, MUTRATE, MUTSTEP)
 
-plt.plot(minFit_data1, label="Tournament")
-plt.plot(minFit_data2, label="Roulette Wheel")
-
+plt.plot(minFitness_data1, label="Tournament")
+plt.plot(minFitness_data2, label="Roulette Wheel")
 
 # P = 100
 # N = 10
@@ -493,14 +449,13 @@ plt.plot(minFit_data2, label="Roulette Wheel")
 # Mean Fitness: 10.86736630105411
 
 
-
-#TS
+# TNS
 # plt.title("Minimisation GA - Tournament Selection \n"
 #             + "N = " + str(N) + " Mutrate = " + str(MUTRATE) + " Mutstep = " + str(MUTSTEP))
 # population = init_population()
-# minFit_data1, meanFit_data1 = genetic_algorithm(population, TNS_min, MUTRATE, MUTSTEP)
-# plt.plot(minFit_data1, label="Best Fitness")
-# plt.plot(meanFit_data1, label="Mean Fitness")
+# minFitness_data1, meanFitness_data1 = genetic_algorithm(population, TNS_min, MUTRATE, MUTSTEP)
+# plt.plot(minFitness_data1, label="Best Fitness")
+# plt.plot(meanFitness_data1, label="Mean Fitness")
 
 # P = 100
 # N = 10
@@ -517,15 +472,15 @@ plt.plot(minFit_data2, label="Roulette Wheel")
 #             + "Different Mutrates")
 # population = init_population()
 #
-# minFit_data1, meanFit_data1 = genetic_algorithm(population, TNS_min, 0.3, 1.0)
-# minFit_data2, meanFit_data2 = genetic_algorithm(population, TNS_min, 0.03, 1.0)
-# minFit_data3, meanFit_data3 = genetic_algorithm(population, TNS_min, 0.003, 1.0)
-# minFit_data4, meanFit_data4 = genetic_algorithm(population, TNS_min, 0.0003, 1.0)
+# minFitness_data1, meanFitness_data1 = genetic_algorithm(population, TNS_min, 0.3, 1.0)
+# minFitness_data2, meanFitness_data2 = genetic_algorithm(population, TNS_min, 0.03, 1.0)
+# minFitness_data3, meanFitness_data3 = genetic_algorithm(population, TNS_min, 0.003, 1.0)
+# minFitness_data4, meanFitness_data4 = genetic_algorithm(population, TNS_min, 0.0003, 1.0)
 #
-# plt.plot(minFit_data1, label="Mutrate 0.3")
-# plt.plot(minFit_data2, label="Mutrate 0.03")
-# plt.plot(minFit_data3, label="Mutrate 0.003")
-# plt.plot(minFit_data4, label="Mutrate 0.0003")
+# plt.plot(minFitness_data1, label="Mutrate 0.3")
+# plt.plot(minFitness_data2, label="Mutrate 0.03")
+# plt.plot(minFitness_data3, label="Mutrate 0.003")
+# plt.plot(minFitness_data4, label="Mutrate 0.0003")
 
 # P = 100
 # N = 10
@@ -546,15 +501,13 @@ plt.plot(minFit_data2, label="Roulette Wheel")
 # Mean Fitness: 5.51134657065318
 
 
-#RWS
+# RWS
 # plt.title("Minimisation GA - Roulette Wheel Selection \n"
 #             + "N = " + str(N) + " Mutrate = " + str(MUTRATE) + " Mutstep = " + str(MUTSTEP))
-#
-# # initialise original population
 # population = init_population()
-# minFit_data1, meanFit_data1 = genetic_algorithm(population, RWS_min, MUTRATE, MUTSTEP)
-# plt.plot(minFit_data1, label="Best Fitness")
-# plt.plot(meanFit_data1, label="Mean Fitness")
+# minFitness_data1, meanFitness_data1 = genetic_algorithm(population, RWS_min, MUTRATE, MUTSTEP)
+# plt.plot(minFitness_data1, label="Best Fitness")
+# plt.plot(meanFitness_data1, label="Mean Fitness")
 
 # P = 100
 # N = 10
@@ -571,15 +524,15 @@ plt.plot(minFit_data2, label="Roulette Wheel")
 #             + "Different Mutrates")
 # population = init_population()
 #
-# minFit_data1, meanFit_data1 = genetic_algorithm(population, RWS_min, 0.3, 1.0)
-# minFit_data2, meanFit_data2 = genetic_algorithm(population, RWS_min, 0.03, 1.0)
-# minFit_data3, meanFit_data3 = genetic_algorithm(population, RWS_min, 0.003, 1.0)
-# minFit_data4, meanFit_data4 = genetic_algorithm(population, RWS_min, 0.0003, 1.0)
+# minFitness_data1, meanFitness_data1 = genetic_algorithm(population, RWS_min, 0.3, 1.0)
+# minFitness_data2, meanFitness_data2 = genetic_algorithm(population, RWS_min, 0.03, 1.0)
+# minFitness_data3, meanFitness_data3 = genetic_algorithm(population, RWS_min, 0.003, 1.0)
+# minFitness_data4, meanFitness_data4 = genetic_algorithm(population, RWS_min, 0.0003, 1.0)
 #
-# plt.plot(minFit_data1, label="Mutrate 0.3")
-# plt.plot(minFit_data2, label="Mutrate 0.03")
-# plt.plot(minFit_data3, label="Mutrate 0.003")
-# plt.plot(minFit_data4, label="Mutrate 0.0003")
+# plt.plot(minFitness_data1, label="Mutrate 0.3")
+# plt.plot(minFitness_data2, label="Mutrate 0.03")
+# plt.plot(minFitness_data3, label="Mutrate 0.003")
+# plt.plot(minFitness_data4, label="Mutrate 0.0003")
 
 
 # P = 100
@@ -600,7 +553,5 @@ plt.plot(minFit_data2, label="Roulette Wheel")
 # Min Fitness: 5.511346570653178
 # Mean Fitness: 5.51134657065318
 
-
-# DISPLAY PLOT
 plt.legend(loc="upper right")
 plt.show()
